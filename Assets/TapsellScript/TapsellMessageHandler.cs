@@ -5,7 +5,7 @@ using SimpleJSON;
 public class TapsellMessageHandler : MonoBehaviour{
 	
 	public void NotifyError(String str){
-		//GuiTextDebugdebug ("NotifyError:"+str);
+		debugLog("NotifyError:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellError result = new TapsellError ();
 		result.error = node ["error"].Value;
@@ -14,23 +14,23 @@ public class TapsellMessageHandler : MonoBehaviour{
 	}
 	
 	public void NotifyAdAvailable(String str){
-		//GuiTextDebugdebug ("NotifyAdAvailable:"+str);
+		debugLog("NotifyAdAvailable:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellResult result = new TapsellResult();
-		//GuiTextDebugdebug ("adId = " + node ["adId"].Value);
+		debugLog("adId = " + node ["adId"].Value);
 		result.adId = node ["adId"].Value;
-		//GuiTextDebugdebug ("adId = " + result.adId);
+		debugLog("adId = " + result.adId);
 		result.zoneId = node ["zondeId"].Value;
 		Tapsell.onAdAvailable (result);
 	}
 
 	public void NotifyNoAdAvailable(String zone){
-		//GuiTextDebugdebug ("NotifyNoAdAvailable:"+zone);
+		debugLog("NotifyNoAdAvailable:"+zone);
 		Tapsell.onNoAdAvailable (zone);
 	}
 
 	public void NotifyExpiring(String str){
-		//GuiTextDebugdebug ("NotifyExpiring:"+str);
+		debugLog("NotifyExpiring:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellResult result = new TapsellResult();
 		result.adId = node ["adId"].Value;
@@ -39,13 +39,13 @@ public class TapsellMessageHandler : MonoBehaviour{
 	}
 
 	public void NotifyNoNetwork(String zone){
-		//GuiTextDebugdebug ("NotifyNoNetwork:"+zone);
+		debugLog("NotifyNoNetwork:"+zone);
 		Tapsell.onNoNetwork (zone);
 	}
 
 	public void NotifyAdShowFinished(String str)
 	{
-		//GuiTextDebugdebug ("NotifyAdShowFinished:"+str);
+		debugLog("NotifyAdShowFinished:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellAdFinishedResult result = new TapsellAdFinishedResult ();
 		result.adId=node["adId"].Value;
@@ -57,7 +57,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 
 	public void debugLog(String str)
 	{
-		//GuiTextDebugdebug (str);
+		Debug.Log (str);
 	}
 
 }

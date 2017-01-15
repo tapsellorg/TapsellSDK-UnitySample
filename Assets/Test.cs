@@ -14,9 +14,9 @@ public class Test : MonoBehaviour {
 		Tapsell.initialize ("ekdcaoonjrofaqipsbnffdlnrdafefalbhcmastitqhbffkhdcoqahdilnqrabcsiahoon");
 	}
 
-	private void requestAd(string zone)
+	private void requestAd(string zone,bool cached)
 	{
-		Tapsell.requestAd(zone,
+		Tapsell.requestAd(zone,cached,
 			(TapsellResult result) => {
 				// onAdAvailable
 				Debug.Log("Action: onAdAvailable");
@@ -44,7 +44,7 @@ public class Test : MonoBehaviour {
 				Debug.Log("Expiring");
 				Test.available=false;
 				Test.ad=null;
-				requestAd(result.zoneId);
+				requestAd(result.zoneId,false);
 			}
 
 		);
@@ -56,6 +56,7 @@ public class Test : MonoBehaviour {
 		if(Test.available)
 		{
 			if(GUI.Button(new Rect(50, 50, 100, 100), "Show Ad")){
+				Test.available = false;
 				TapsellShowOptions options = new TapsellShowOptions ();
 				options.backDisabled = false;
 				options.immersiveMode = false;
@@ -71,7 +72,7 @@ public class Test : MonoBehaviour {
 			}
 		}
 		if(GUI.Button(new Rect(200, 50, 100, 100), "Request Ad")){
-			requestAd (null);
+			requestAd (null,false);
 		}
 
 	}

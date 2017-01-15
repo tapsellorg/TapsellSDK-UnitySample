@@ -48,9 +48,6 @@ public class Tapsell
 	private static Dictionary<string,Action<TapsellResult>> requestExpiringPool = new Dictionary<string,Action<TapsellResult>>();
 	private static Dictionary<string,Action<TapsellAdFinishedResult>> adFinishedPool = new Dictionary<string,Action<TapsellAdFinishedResult>>();
 
-	//private static Dictionary<string, TapsellAdRequestListener> requestListenerPool = new Dictionary<string, TapsellAdRequestListener>();
-	//private static Dictionary<string, TapsellAdShowListener> showListenerPool = new Dictionary<string, TapsellAdShowListener>();
-
 	private static string defaultTapsellZone = "defaultTapsellZone";
 
 	private static GameObject tapsellManager;
@@ -62,7 +59,6 @@ public class Tapsell
 		#if UNITY_ANDROID
 		setJavaObject();
 		bool a= tapsell.CallStatic<Boolean>("initialize", key);
-		//GuiTextDebug.debug("tapsell initialize: "+a);
 		#endif
 	}
 
@@ -113,15 +109,13 @@ public class Tapsell
 		#endif
 	}
 
-	public static bool requestAd(string zoneId, Action<TapsellResult> onAdAvailableAction, Action<string> onNoAdAvailableAction,
+	public static bool requestAd(string zoneId, Boolean isCached, Action<TapsellResult> onAdAvailableAction, Action<string> onNoAdAvailableAction,
 		Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<TapsellResult> onExpiringAction)
 	{
 		#if UNITY_ANDROID
 		string zone = zoneId;
-		//GuiTextDebug.debug("requestAd zone= "+zone);
 		if(String.IsNullOrEmpty(zoneId))
 		{
-			//GuiTextDebug.debug("requestAd zone is null");
 			zoneId="defaultTapsellZone";
 		}
 		if( requestAdAvailablePool.ContainsKey (zoneId) )
@@ -154,7 +148,7 @@ public class Tapsell
 		}
 		requestExpiringPool.Add(zoneId,onExpiringAction);
 
-		return tapsell.CallStatic<Boolean>("requestAd",zone);
+		return tapsell.CallStatic<Boolean>("requestAd",zone,isCached);
 		#else
 		return false;
 		#endif
@@ -189,7 +183,6 @@ public class Tapsell
 		if (requestErrorPool.ContainsKey (zoneId))
 		{
 			requestErrorPool [zoneId](error);
-			//requestErrorPool.Remove (zoneId);
 		}
 	}
 
@@ -203,7 +196,6 @@ public class Tapsell
 		if (requestNoAdAvailablePool.ContainsKey (zoneId))
 		{
 			requestNoAdAvailablePool [zoneId](zone);
-			//requestNoAdAvailablePool.Remove (zoneId);
 		}
 	}
 
@@ -217,26 +209,19 @@ public class Tapsell
 		if (requestNoNetworkPool.ContainsKey (zoneId))
 		{
 			requestNoNetworkPool [zoneId] (zone);
-			//requestNoNetworkPool.Remove (zoneId);
 		}
 	}
 
 	public static void onAdAvailable(TapsellResult result)
 	{
-		////GuiTextDebug.debug ("Tapsell.cs onAdAvailable, result null? : "+object.ReferenceEquals(null,result));
-		////GuiTextDebug.debug ("Tapsell.cs onAdAvailable, zoneId null? : "+String.IsNullOrEmpty(result.zoneId));
-		////GuiTextDebug.debug ("Tapsell.cs onAdAvailable, adId  : "+result.adId);
 		string zone = result.zoneId;
 		if(String.IsNullOrEmpty(zone))
 		{
-			////GuiTextDebug.debug ("Tapsell.cs onAdAvailable, zoneId is null");
 			zone=defaultTapsellZone;
 		}
 		if (requestAdAvailablePool.ContainsKey (zone))
 		{
-			////GuiTextDebug.debug ("Tapsell.cs onAdAvailable, request pull contains zone ");
 			requestAdAvailablePool [zone](result);
-			//requestAdAvailablePool.Remove (zone);
 		}
 	}
 
@@ -250,7 +235,6 @@ public class Tapsell
 		if (requestExpiringPool.ContainsKey (zone))
 		{
 			requestExpiringPool [zone] (result);
-			//requestExpiringPool.Remove (zone);
 		}
 	}
 
@@ -259,7 +243,6 @@ public class Tapsell
 		if (adFinishedPool.ContainsKey (result.adId))
 		{
 			adFinishedPool [result.adId] (result);
-			//adFinishedPool.Remove (result.adId);
 		}
 	}
 
