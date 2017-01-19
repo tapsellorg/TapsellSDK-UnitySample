@@ -20,7 +20,8 @@ public class TapsellMessageHandler : MonoBehaviour{
 		debugLog("adId = " + node ["adId"].Value);
 		result.adId = node ["adId"].Value;
 		debugLog("adId = " + result.adId);
-		result.zoneId = node ["zondeId"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		debugLog("zondeId = " + result.zoneId);
 		Tapsell.onAdAvailable (result);
 	}
 
@@ -34,7 +35,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 		JSONNode node = JSON.Parse (str);
 		TapsellResult result = new TapsellResult();
 		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zondeId"].Value;
+		result.zoneId = node ["zoneId"].Value;
 		Tapsell.onExpiring (result);
 	}
 

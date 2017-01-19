@@ -214,7 +214,9 @@ public class Tapsell
 
 	public static void onAdAvailable(TapsellResult result)
 	{
+		Debug.Log ("onAdAvailable");
 		string zone = result.zoneId;
+		Debug.Log ("zone = "+zone);
 		if(String.IsNullOrEmpty(zone))
 		{
 			zone=defaultTapsellZone;
