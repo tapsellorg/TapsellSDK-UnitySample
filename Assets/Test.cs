@@ -73,7 +73,7 @@ public class Test : MonoBehaviour {
 			}
 		}
 		if(GUI.Button(new Rect(200, 50, 100, 100), "Request Ad")){
-			requestAd (null,false);
+			requestAd ("5873510bbc5c28f9d90ce98d",false);
 		}
 
 	}
