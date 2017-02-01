@@ -30,6 +30,8 @@ public class TapsellShowOptions
 	public static int ROTATION_LOCKED_PORTRAIT = 1;
 	public static int ROTATION_LOCKED_LANDSCAPE = 2;
 	public static int ROTATION_UNLOCKED = 3;
+	public static int ROTATION_LOCKED_REVERSED_PORTRAIT = 4;
+	public static int ROTATION_LOCKED_REVERSED_LANDSCAPE = 5;
 
 	public bool backDisabled=false;
 	public bool immersiveMode=false;

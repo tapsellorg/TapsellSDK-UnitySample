@@ -61,7 +61,7 @@ public class Test : MonoBehaviour {
 				TapsellShowOptions options = new TapsellShowOptions ();
 				options.backDisabled = false;
 				options.immersiveMode = false;
-				options.rotationMode = TapsellShowOptions.ROTATION_UNLOCKED;
+				options.rotationMode = TapsellShowOptions.ROTATION_LOCKED_REVERSED_PORTRAIT;
 				Tapsell.showAd(ad,options,
 					(TapsellAdFinishedResult result) => 
 					{
