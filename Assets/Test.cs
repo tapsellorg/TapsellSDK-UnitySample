@@ -11,7 +11,7 @@ public class Test : MonoBehaviour {
 
 	void Start() {
 		// Use your tapsell key for initialization
-		Tapsell.initialize ("ekdcaoonjrofaqipsbnffdlnrdafefalbhcmastitqhbffkhdcoqahdilnqrabcsiahoon");
+		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
 	}
 
 
