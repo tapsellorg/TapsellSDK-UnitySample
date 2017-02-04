@@ -21,7 +21,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 		result.adId = node ["adId"].Value;
 		debugLog("adId = " + result.adId);
 		result.zoneId = node ["zoneId"].Value;
-		debugLog("zondeId = " + result.zoneId);
+		debugLog("zoneId = " + result.zoneId);
 		Tapsell.onAdAvailable (result);
 	}
 

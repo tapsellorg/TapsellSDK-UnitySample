@@ -12,6 +12,9 @@ public class Test : MonoBehaviour {
 	void Start() {
 		// Use your tapsell key for initialization
 		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
+		Tapsell.setDebugMode (true);
+		Tapsell.setAutoHandlePermissions (true);
+		Tapsell.setMaxAllowedBandwidthUsagePercentage (50);
 	}
 
 
@@ -61,7 +64,8 @@ public class Test : MonoBehaviour {
 				TapsellShowOptions options = new TapsellShowOptions ();
 				options.backDisabled = false;
 				options.immersiveMode = false;
-				options.rotationMode = TapsellShowOptions.ROTATION_LOCKED_REVERSED_PORTRAIT;
+				options.rotationMode = TapsellShowOptions.ROTATION_UNLOCKED;
+				options.showDialog = true;
 				Tapsell.showAd(ad,options,
 					(TapsellAdFinishedResult result) => 
 					{
@@ -73,7 +77,7 @@ public class Test : MonoBehaviour {
 			}
 		}
 		if(GUI.Button(new Rect(200, 50, 100, 100), "Request Ad")){
-			requestAd ("5873510bbc5c28f9d90ce98d",false);
+			requestAd ("5873510bbc5c28f9d90ce98d",true);
 		}
 
 	}

@@ -36,6 +36,7 @@ public class TapsellShowOptions
 	public bool backDisabled=false;
 	public bool immersiveMode=false;
 	public int rotationMode=ROTATION_UNLOCKED;
+	public bool showDialog = false;
 }
 
 public class Tapsell
@@ -60,7 +61,7 @@ public class Tapsell
 		tapsellManager.AddComponent<TapsellMessageHandler>();
 		#if UNITY_ANDROID
 		setJavaObject();
-		bool a= tapsell.CallStatic<Boolean>("initialize", key);
+		tapsell.CallStatic<Boolean>("initialize", key);
 		#endif
 	}
 
@@ -108,6 +109,34 @@ public class Tapsell
 		return tapsell.CallStatic<String>("getAppUserId");
 		#else
 		return null;
+		#endif
+	}
+
+	public static void setAutoHandlePermissions(bool autoHandle)
+	{
+		#if UNITY_ANDROID
+		tapsell.CallStatic("setAutoHandlePermissions",autoHandle);
+		#endif
+	}
+
+	public static void setMaxAllowedBandwidthUsage(int maxBpsSpeed)
+	{
+		#if UNITY_ANDROID
+		tapsell.CallStatic("setMaxAllowedBandwidthUsage",maxBpsSpeed);
+		#endif
+	}
+
+	public static void setMaxAllowedBandwidthUsagePercentage(int maxPercentage)
+	{
+		#if UNITY_ANDROID
+		tapsell.CallStatic("setMaxAllowedBandwidthUsagePercentage",maxPercentage);
+		#endif
+	}
+
+	public static void clearBandwidthUsageConstrains()
+	{
+		#if UNITY_ANDROID
+		tapsell.CallStatic("clearBandwidthUsageConstrains");
 		#endif
 	}
 
@@ -170,7 +199,7 @@ public class Tapsell
 		}
 		adFinishedPool.Add(adId,onFinishedAction);
 
-		tapsell.CallStatic("showAd",adId,showOptions.backDisabled,showOptions.immersiveMode,showOptions.rotationMode);
+		tapsell.CallStatic("showAd",adId,showOptions.backDisabled,showOptions.immersiveMode,showOptions.rotationMode,showOptions.showDialog);
 
 		#endif
 	}
