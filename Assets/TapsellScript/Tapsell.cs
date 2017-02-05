@@ -204,6 +204,15 @@ public class Tapsell
 		#endif
 	}
 
+	public static bool isAdReadyToShow(String zoneId)
+	{
+		#if UNITY_ANDROID
+		return tapsell.CallStatic<Boolean>("isAdReadyToShow", zoneId);
+		#else
+		return false;
+		#endif
+	}
+
 	public static void onError(TapsellError error)
 	{
 		string zoneId = error.zoneId;
