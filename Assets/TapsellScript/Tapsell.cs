@@ -204,12 +204,12 @@ public class Tapsell
 		#endif
 	}
 
-	public static bool isAdReadyToShow(String zoneId)
+	public static String getVersion()
 	{
 		#if UNITY_ANDROID
-		return tapsell.CallStatic<Boolean>("isAdReadyToShow", zoneId);
+		return tapsell.CallStatic<String>("getVersion");
 		#else
-		return false;
+		return "";
 		#endif
 	}
 

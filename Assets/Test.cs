@@ -12,6 +12,7 @@ public class Test : MonoBehaviour {
 	void Start() {
 		// Use your tapsell key for initialization
 		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
+		Debug.Log("Version: "+Tapsell.getVersion());
 		Tapsell.setDebugMode (true);
 		Tapsell.setAutoHandlePermissions (true);
 		Tapsell.setMaxAllowedBandwidthUsagePercentage (50);
@@ -48,7 +49,7 @@ public class Test : MonoBehaviour {
 				Debug.Log("Expiring");
 				Test.available=false;
 				Test.ad=null;
-				requestAd(result.zoneId,false);
+				requestAd(result.zoneId,true);
 			}
 
 		);
