@@ -12,10 +12,18 @@ public class Test : MonoBehaviour {
 	void Start() {
 		// Use your tapsell key for initialization
 		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
+		//Tapsell.initialize ("imalohfckqnoqltgbnbicjjqdbcdoabhhqmkjaoepsrtmkioeoekfgpilbiteacoiphdao");
 		Debug.Log("Version: "+Tapsell.getVersion());
 		Tapsell.setDebugMode (true);
 		Tapsell.setAutoHandlePermissions (true);
 		Tapsell.setMaxAllowedBandwidthUsagePercentage (50);
+		Tapsell.setRewardListener (
+			(TapsellAdFinishedResult result) => 
+			{
+				// onFinished, you may give rewards to user if result.completed and result.rewarded are both True
+				Debug.Log ("onFinished, adId:"+result.adId+", zoneId:"+result.zoneId+", completed:"+result.completed+", rewarded:"+result.rewarded);
+			}
+		);
 	}
 
 
@@ -67,18 +75,12 @@ public class Test : MonoBehaviour {
 				options.immersiveMode = false;
 				options.rotationMode = TapsellShowOptions.ROTATION_LOCKED_LANDSCAPE;
 				options.showDialog = true;
-				Tapsell.showAd(ad,options,
-					(TapsellAdFinishedResult result) => 
-					{
-						// onFinished, you may give rewards to user if result.completed and result.rewarded are both True
-						Debug.Log ("onFinished, adId:"+result.adId+", zoneId:"+result.zoneId+", completed:"+result.completed+", rewarded:"+result.rewarded);
-					}
-
-				);
+				Tapsell.showAd(ad,options);
 			}
 		}
 		if(GUI.Button(new Rect(200, 50, 100, 100), "Request Ad")){
 			requestAd ("5873510bbc5c28f9d90ce98d",true);
+			//requestAd("589838344684656ee6c73071",true);
 		}
 
 	}

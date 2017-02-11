@@ -49,7 +49,7 @@ public class Tapsell
 	private static Dictionary<string,Action<string>> requestNoAdAvailablePool = new Dictionary<string,Action<string>>();
 	private static Dictionary<string,Action<string>> requestNoNetworkPool = new Dictionary<string,Action<string>>();
 	private static Dictionary<string,Action<TapsellResult>> requestExpiringPool = new Dictionary<string,Action<TapsellResult>>();
-	private static Dictionary<string,Action<TapsellAdFinishedResult>> adFinishedPool = new Dictionary<string,Action<TapsellAdFinishedResult>>();
+	private static Action<TapsellAdFinishedResult> adFinishedAction = null;//new Action<TapsellAdFinishedResult>();
 
 	private static string defaultTapsellZone = "defaultTapsellZone";
 
@@ -185,7 +185,7 @@ public class Tapsell
 		#endif
 	}
 
-	public static void showAd(String adId, TapsellShowOptions showOptions,Action<TapsellAdFinishedResult> onFinishedAction)
+	public static void showAd(String adId, TapsellShowOptions showOptions)
 	{
 		#if UNITY_ANDROID
 		if(object.ReferenceEquals(showOptions,null))
@@ -193,15 +193,14 @@ public class Tapsell
 			showOptions = new TapsellShowOptions();
 		}
 
-		if(adFinishedPool.ContainsKey(adId))
-		{
-			adFinishedPool.Remove(adId);
-		}
-		adFinishedPool.Add(adId,onFinishedAction);
-
 		tapsell.CallStatic("showAd",adId,showOptions.backDisabled,showOptions.immersiveMode,showOptions.rotationMode,showOptions.showDialog);
 
 		#endif
+	}
+
+	public static void setRewardListener(Action<TapsellAdFinishedResult> onFinishedAction)
+	{
+		adFinishedAction = onFinishedAction;
 	}
 
 	public static String getVersion()
@@ -280,12 +279,15 @@ public class Tapsell
 
 	public static void onAdShowFinished(TapsellAdFinishedResult result)
 	{
-		if (adFinishedPool.ContainsKey (result.adId))
+		//if (adFinishedPool.ContainsKey (result.adId))
+		//{
+		//	adFinishedPool [result.adId] (result);
+		//}
+		if(adFinishedAction!=null)
 		{
-			adFinishedPool [result.adId] (result);
+			adFinishedAction(result);
 		}
 	}
-
-
+		
 }
 
