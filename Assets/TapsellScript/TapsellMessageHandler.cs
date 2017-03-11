@@ -22,8 +22,10 @@ public class TapsellMessageHandler : MonoBehaviour{
 		Tapsell.onAdAvailable (result);
 	}
 
-	public void NotifyNoAdAvailable(String zone){
+	public void NotifyNoAdAvailable(String str){
 		//debugLog("NotifyNoAdAvailable:"+zone);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
 		Tapsell.onNoAdAvailable (zone);
 	}
 
@@ -36,8 +38,10 @@ public class TapsellMessageHandler : MonoBehaviour{
 		Tapsell.onExpiring (result);
 	}
 
-	public void NotifyNoNetwork(String zone){
+	public void NotifyNoNetwork(String str){
 		//debugLog("NotifyNoNetwork:"+zone);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
 		Tapsell.onNoNetwork (zone);
 	}
 

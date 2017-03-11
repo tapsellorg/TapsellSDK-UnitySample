@@ -48,7 +48,7 @@ public class Test : MonoBehaviour {
 
 			(string zoneId) => {
 				// onNoNetwork
-				Debug.Log("No Network");
+				Debug.Log("No Network: "+zoneId);
 			},
 
 			(TapsellResult result) => {
