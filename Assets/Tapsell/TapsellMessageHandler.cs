@@ -1,11 +1,12 @@
 ﻿using System;
 using UnityEngine;
 using SimpleJSON;
+using TapsellSDK;
 
 public class TapsellMessageHandler : MonoBehaviour{
 	
 	public void NotifyError(String str){
-		//debugLog("NotifyError:"+str);
+		debugLog("NotifyError:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellError result = new TapsellError ();
 		result.error = node ["error"].Value;
@@ -14,7 +15,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	}
 	
 	public void NotifyAdAvailable(String str){
-		//debugLog("NotifyAdAvailable:"+str);
+		debugLog("NotifyAdAvailable:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellResult result = new TapsellResult();
 		result.adId = node ["adId"].Value;
@@ -23,14 +24,14 @@ public class TapsellMessageHandler : MonoBehaviour{
 	}
 
 	public void NotifyNoAdAvailable(String str){
-		//debugLog("NotifyNoAdAvailable:"+zone);
+		debugLog("NotifyNoAdAvailable:"+str);
 		JSONNode node = JSON.Parse (str);
 		String zone = node ["zoneId"].Value;
 		Tapsell.onNoAdAvailable (zone);
 	}
 
 	public void NotifyExpiring(String str){
-		//debugLog("NotifyExpiring:"+str);
+		debugLog("NotifyExpiring:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellResult result = new TapsellResult();
 		result.adId = node ["adId"].Value;
@@ -39,7 +40,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	}
 
 	public void NotifyNoNetwork(String str){
-		//debugLog("NotifyNoNetwork:"+zone);
+		debugLog("NotifyNoNetwork:"+str);
 		JSONNode node = JSON.Parse (str);
 		String zone = node ["zoneId"].Value;
 		Tapsell.onNoNetwork (zone);
@@ -47,7 +48,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 
 	public void NotifyAdShowFinished(String str)
 	{
-		//debugLog("NotifyAdShowFinished:"+str);
+		debugLog("NotifyAdShowFinished:"+str);
 		JSONNode node = JSON.Parse (str);
 		TapsellAdFinishedResult result = new TapsellAdFinishedResult ();
 		result.adId=node["adId"].Value;

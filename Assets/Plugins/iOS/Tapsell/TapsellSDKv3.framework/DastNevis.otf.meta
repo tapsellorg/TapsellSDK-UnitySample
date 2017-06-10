@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0c61269488330994e9ac3d360e91dc7b
+timeCreated: 1497090674
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dast Nevis
+  fontNames:
+  - Dast Nevis
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

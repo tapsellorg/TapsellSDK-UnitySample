@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using System.Linq;
+using TapsellSDK;
 
 public class Test : MonoBehaviour {
 	
@@ -12,10 +13,9 @@ public class Test : MonoBehaviour {
 	void Start() {
 		// Use your tapsell key for initialization
 		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
-		Debug.Log("Version: "+Tapsell.getVersion());
+		Debug.Log("Tapsell Version: "+Tapsell.getVersion());
 		Tapsell.setDebugMode (true);
 		Tapsell.setAutoHandlePermissions (true);
-		Tapsell.setMaxAllowedBandwidthUsagePercentage (50);
 		Tapsell.setRewardListener (
 			(TapsellAdFinishedResult result) => 
 			{
@@ -56,7 +56,7 @@ public class Test : MonoBehaviour {
 				Debug.Log("Expiring");
 				Test.available=false;
 				Test.ad=null;
-				requestAd(result.zoneId,true);
+				requestAd(result.zoneId,false);
 			}
 
 		);
@@ -78,7 +78,7 @@ public class Test : MonoBehaviour {
 			}
 		}
 		if(GUI.Button(new Rect(200, 50, 100, 100), "Request Ad")){
-			requestAd ("5873510bbc5c28f9d90ce98d",true);
+			requestAd ("5873510bbc5c28f9d90ce98d",false);
 		}
 
 	}

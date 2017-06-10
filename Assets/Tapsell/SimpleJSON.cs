@@ -403,7 +403,7 @@ namespace SimpleJSON
                         stack.Pop();
                         if (Token.Length > 0)
                         {
-                            string tmpName = TokenName.ToString().Trim();
+                            //string tmpName = TokenName.ToString().Trim();
                             AddElement(ctx, Token.ToString(), TokenName.ToString(), TokenIsString);
                             TokenIsString = false;
                         }

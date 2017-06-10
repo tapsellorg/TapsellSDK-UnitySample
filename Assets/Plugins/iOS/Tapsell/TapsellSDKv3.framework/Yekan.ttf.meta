@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0a61f061cd20b0f459357bdb1532ed29
+timeCreated: 1497090674
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Web Yekan
+  fontNames:
+  - Web Yekan
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
