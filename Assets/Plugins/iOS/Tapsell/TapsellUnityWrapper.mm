@@ -61,6 +61,12 @@ void TSSafeUnitySendMessage(const char *methodName, const char *param) {
          } onExpiring:^(TapsellAd * _Nullable ad) {
              NSString* result = [NSString stringWithFormat:@"{\"adId\":\"%@\",\"zoneId\":\"%@\"}",[ad getId],ad.zoneId];
              TSSafeUnitySendMessage(TS_MakeStringCopy(@"NotifyExpiring"),TS_MakeStringCopy(result));
+         } onOpened:^(TapsellAd * _Nullable ad) {
+             NSString* result = [NSString stringWithFormat:@"{\"adId\":\"%@\",\"zoneId\":\"%@\"}",[ad getId],ad.zoneId];
+             TSSafeUnitySendMessage(TS_MakeStringCopy(@"NotifyOpened"),TS_MakeStringCopy(result));
+         } onClosed:^(TapsellAd * _Nullable ad) {
+             NSString* result = [NSString stringWithFormat:@"{\"adId\":\"%@\",\"zoneId\":\"%@\"}",[ad getId],ad.zoneId];
+             TSSafeUnitySendMessage(TS_MakeStringCopy(@"NotifyClosed"),TS_MakeStringCopy(result));
          }];
         [TapsellExtraPlatformsController setAdShowFinishedCallback:^(TapsellAd *ad, BOOL completed) {
             NSString* isCompleted = @"";

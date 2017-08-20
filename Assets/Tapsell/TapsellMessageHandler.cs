@@ -1,10 +1,12 @@
 ﻿using System;
 using UnityEngine;
-using SimpleJSON;
+using TapsellSimpleJSON;
 using TapsellSDK;
 
 public class TapsellMessageHandler : MonoBehaviour{
-	
+
+	// rewarded video, interstitial video/web
+
 	public void NotifyError(String str){
 		debugLog("NotifyError:"+str);
 		JSONNode node = JSON.Parse (str);
@@ -44,6 +46,67 @@ public class TapsellMessageHandler : MonoBehaviour{
 		JSONNode node = JSON.Parse (str);
 		String zone = node ["zoneId"].Value;
 		Tapsell.onNoNetwork (zone);
+	}
+
+	// native
+
+	public void NotifyNativeBannerError(String str){
+		debugLog("NotifyNativeBannerError:"+str);
+		JSONNode node = JSON.Parse (str);
+		TapsellError result = new TapsellError ();
+		result.error = node ["error"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		Tapsell.onNativeBannerError (result);
+	}
+
+	public void NotifyNativeBannerRequestFilled(String str){
+		debugLog("NotifyNativeBannerRequestFilled:"+str);
+		JSONNode node = JSON.Parse (str);
+		TapsellNativeBannerResult result = new TapsellNativeBannerResult();
+		result.adId = node ["adId"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		result.title = node ["title"].Value;
+		result.description = node ["description"].Value;
+		result.iconUrl = node ["iconUrl"].Value;
+		result.callToActionText = node ["callToActionText"].Value;
+		result.portraitStaticImageUrl = node ["portraitStaticImageUrl"].Value;
+		result.landscapeStaticImageUrl = node ["landscapeStaticImageUrl"].Value;
+		Tapsell.onNativeBannerRequestFilled (result);
+	}
+
+	public void NotifyNativeBannerNoAdAvailable(String str){
+		debugLog("NotifyNativeBannerNoAdAvailable:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onNativeBannerNoAdAvailable (zone);
+	}
+
+	public void NotifyNativeBannerNoNetwork(String str){
+		debugLog("NotifyNativeBannerNoNetwork:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onNativeBannerNoNetwork (zone);
+	}
+
+
+	// ad open, close and reward
+
+	public void NotifyOpened(String str){
+		debugLog("NotifyOpened:"+str);
+		JSONNode node = JSON.Parse (str);
+		TapsellResult result = new TapsellResult();
+		result.adId = node ["adId"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		Tapsell.onOpened (result);
+	}
+
+	public void NotifyClosed(String str){
+		debugLog("NotifyClosed:"+str);
+		JSONNode node = JSON.Parse (str);
+		TapsellResult result = new TapsellResult();
+		result.adId = node ["adId"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		Tapsell.onClosed (result);
 	}
 
 	public void NotifyAdShowFinished(String str)

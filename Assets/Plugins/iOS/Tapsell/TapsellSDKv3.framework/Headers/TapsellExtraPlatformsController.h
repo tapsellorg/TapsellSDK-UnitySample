@@ -24,6 +24,10 @@
 
 + (void) onExpiring:(TapsellAd* _Nullable)ad;
 
++ (void) onOpened:(TapsellAd* _Nullable)ad;
+
++ (void) onClosed:(TapsellAd* _Nullable)ad;
+
 + (void)initializeWithAppKey:(NSString* _Nonnull)appKey;
 
 + (BOOL)isDebugMode;
@@ -47,9 +51,11 @@
 + (NSString* _Nullable)getVersion;
 
 - (void) setPlatformControllerOnAdAvailable: (void (^_Nullable)(TapsellAd * _Nullable ad)) onAdAvailable
-               onNoAdAvailable:(void (^_Nullable)(NSString* _Nullable zoneId)) onNoAdAvailable
-                       onError:(void (^_Nullable)(NSString* _Nullable error, NSString* _Nullable zoneId)) onError
-                    onExpiring:(void (^_Nullable)(TapsellAd * _Nullable ad)) onExpiring;
+                            onNoAdAvailable:(void (^_Nullable)(NSString* _Nullable zoneId)) onNoAdAvailable
+                                    onError:(void (^_Nullable)(NSString* _Nullable error, NSString* _Nullable zoneId)) onError
+                                 onExpiring:(void (^_Nullable)(TapsellAd * _Nullable ad)) onExpiring
+                                   onOpened:(void (^_Nullable)(TapsellAd * _Nullable ad)) onOpened
+                                   onClosed:(void (^_Nullable)(TapsellAd * _Nullable ad)) onClosed;
 
 + (void)setAdShowFinishedCallback: (void (^_Nullable)(TapsellAd * _Nullable ad, BOOL completed)) onAdShowFinished;
 

@@ -16,34 +16,36 @@
 
 @interface TapsellAd : NSObject
 
--(void)setAd:(id)ad;
--(void)setVideoFilePath:(NSString*)videoFilePath;
--(void)setAdRequestOptions:(TSAdRequestOptions*)requestOptions;
--(void)setZoneId:(NSString*)zoneId;
--(void)setCacheTime:(NSNumber*)cacheTime;
--(void)showWithOptions:(TSAdShowOptions* )showOptions;
+-(void)setAd:(id _Nullable )ad;
+-(void)setVideoFilePath:(NSString*_Nullable)videoFilePath;
+-(void)setAdRequestOptions:(TSAdRequestOptions*_Nullable)requestOptions;
+-(void)setZoneId:(NSString*_Nullable)zoneId;
+-(void)setCacheTime:(NSNumber*_Nullable)cacheTime;
+-(void)showWithOptions:(TSAdShowOptions*_Nullable)showOptions
+     andOpenedCallback:(void (^_Nullable)(TapsellAd * _Nullable ad)) onOpened
+     andClosedCallback:(void (^_Nullable)(TapsellAd * _Nullable ad)) onClosed;
 
--(NSNumber*) getCacheTime;
--(NSString*) getZoneId;
+-(NSNumber*_Nullable) getCacheTime;
+-(NSString*_Nullable) getZoneId;
 -(BOOL) isValid;
 -(BOOL) isVideoAd;
 -(BOOL) isRewardedAd;
 -(BOOL) isBannerAd;
 -(BOOL) isExpired;
--(NSString*)getVideoFilePath;
+-(NSString*_Nullable)getVideoFilePath;
 -(BOOL)isAdShown;
--(NSString*) getId;
--(TSAdRequestOptions*)getRequestOptions;
+-(NSString*_Nullable) getId;
+-(TSAdRequestOptions*_Nullable)getRequestOptions;
 
-@property (nonatomic, strong, readonly) NSNumber* cacheTime;
-@property (nonatomic, strong, readonly) NSString* zoneId;
-@property (nonatomic, strong, readonly) NSNumber* isShown;
-@property (nonatomic, strong, readonly) NSString* videoFilePath;
-@property (nonatomic, strong, readonly) TSAdRequestOptions* requestOptions;
+@property (nonatomic, strong, readonly) NSNumber* _Nullable cacheTime;
+@property (nonatomic, strong, readonly) NSString* _Nullable zoneId;
+@property (nonatomic, strong, readonly) NSNumber* _Nullable isShown;
+@property (nonatomic, strong, readonly) NSString* _Nullable videoFilePath;
+@property (nonatomic, strong, readonly) TSAdRequestOptions* _Nullable requestOptions;
 
 // serialization
--(NSArray<NSString*> *) keys;
--(BOOL) isValidValue: (id) value;
+-(NSArray<NSString*> *_Nullable) keys;
+-(BOOL) isValidValue: (id _Nullable ) value;
 
 @end
 
