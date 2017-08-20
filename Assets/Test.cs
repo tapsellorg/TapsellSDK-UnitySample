@@ -95,12 +95,13 @@ public class Test : MonoBehaviour {
 		{
 			GUIStyle titleStyle = new GUIStyle ();
 			titleStyle.alignment = TextAnchor.UpperRight;
-			GUI.Label (new Rect (50, 250, 500, 30), ArabicFixer.Fix(Test.nativeAd.getTitle (),true), titleStyle);
+			GUI.Label (new Rect (50, 250, 450, 30), ArabicFixer.Fix(Test.nativeAd.getTitle (),true), titleStyle);
 			
 			GUIStyle descriptionStyle = new GUIStyle ();
 			descriptionStyle.richText = true;
 			descriptionStyle.alignment = TextAnchor.MiddleRight;
-			GUI.Label (new Rect (50, 280, 500, 20), ArabicFixer.Fix(Test.nativeAd.getDescription (),true), descriptionStyle);
+			GUI.Label (new Rect (50, 280, 450, 20), ArabicFixer.Fix(Test.nativeAd.getDescription (),true), descriptionStyle);
+			GUI.DrawTexture (new Rect(500, 250, 50, 50), Test.nativeAd.getIcon() );
 			Rect callToActionRect;
 			if(Test.nativeAd.getLandscapeBannerImage()!=null)
 			{
