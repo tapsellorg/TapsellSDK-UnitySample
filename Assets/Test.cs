@@ -69,7 +69,7 @@ public class Test : MonoBehaviour {
 	{
 		if(Test.available)
 		{
-			if(GUI.Button(new Rect(150, 50, 100, 100), "Show Ad")){
+			if(GUI.Button(new Rect(250, 50, 200, 100), "Show Ad")){
 				Test.available = false;
 				TapsellShowOptions options = new TapsellShowOptions ();
 				options.backDisabled = false;
@@ -79,15 +79,15 @@ public class Test : MonoBehaviour {
 				Tapsell.showAd(ad,options);
 			}
 		}
-		if(GUI.Button(new Rect(50, 50, 100, 100), "Request Video Ad")){
+		if(GUI.Button(new Rect(50, 50, 200, 100), "Request Video Ad")){
 			requestAd ("5873510bbc5c28f9d90ce98d",false);
 		}
 
-		#if UNITY_ANDROID && !UNITY_EDITOR
 
+		#if UNITY_ANDROID && !UNITY_EDITOR
 		if(Test.nativeAd==null)
 		{
-			if(GUI.Button(new Rect(50, 150, 100, 100), "Request Banner Ad")){
+			if(GUI.Button(new Rect(50, 150, 200, 100), "Request Banner Ad")){
 				requestNativeBannerAd ("598eadad468465085986d07e");
 			}
 		}
@@ -117,8 +117,10 @@ public class Test : MonoBehaviour {
 			{
 				callToActionRect = new Rect(50, 300, 500, 50);
 			}
+		    Test.nativeAd.onShown ();
 			if(GUI.Button (callToActionRect, ArabicFixer.Fix(Test.nativeAd.getCallToAction (),true) ))
 			{
+				Test.nativeAd.onClicked ();
 				Tapsell.onNativeBannerAdClicked (Test.nativeAd.adId);
 			}
 		}

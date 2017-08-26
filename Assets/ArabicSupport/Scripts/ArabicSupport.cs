@@ -155,8 +155,8 @@ internal enum IsolatedArabicLetters
 	Noon = 0xFEE5,
 	Ha = 0xFEE9,
 	Waw = 0xFEED,
-	Ya = 0xFEF1,
-	Ya2 = 0xFEF1,
+	Ya = 0xFBFC,//0xFEF1,
+	Ya2 = 0xFBFC,//0xFEF1,
 	AlefMad = 0xFE81,
 	TaMarboota = 0xFE93,
 	PersianPe = 0xFB56,  	// Persian Letters;

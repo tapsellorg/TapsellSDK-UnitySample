@@ -36,6 +36,8 @@ namespace TapsellSDK {
 		public string portraitStaticImageUrl;
 		public string landscapeStaticImageUrl;
 
+		public bool shownReported = false;
+
 		public Texture2D portraitBannerImage;
 		public Texture2D landscapeBannerImage;
 		public Texture2D iconImage;
@@ -68,6 +70,20 @@ namespace TapsellSDK {
 		public Texture2D getIcon()
 		{
 			return iconImage;
+		}
+
+		public void onShown()
+		{
+			if (!this.shownReported)
+			{
+				Tapsell.onNativeBannerAdShown (this.adId);
+				this.shownReported = true;
+			}
+		}
+
+		public void onClicked()
+		{
+			Tapsell.onNativeBannerAdClicked (this.adId);
 		}
 	}
 
@@ -700,7 +716,13 @@ namespace TapsellSDK {
 			tapsell.CallStatic("onNativeBannerAdClicked",adId);
 			#endif
 		}
-			
+
+		public static void onNativeBannerAdShown(string adId)
+		{
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			tapsell.CallStatic("onNativeBannerAdShown",adId);
+			#endif
+		}
 	}
 }
 
