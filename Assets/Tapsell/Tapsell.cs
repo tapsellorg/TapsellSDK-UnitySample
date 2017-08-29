@@ -160,16 +160,19 @@ namespace TapsellSDK {
 
 		private static string defaultTapsellZone = "defaultTapsellZone";
 
-		private static GameObject tapsellManager;
+		private static GameObject tapsellManager = null;
 
 		/// <summary>
 		/// Initializes Tapsell SDK with the specified key.
 		/// </summary>
 		/// <param name="key">Key.</param>
 		public static void initialize(string key){
-			tapsellManager = new GameObject ("TapsellManager");
-			UnityEngine.Object.DontDestroyOnLoad (tapsellManager);
-			tapsellManager.AddComponent<TapsellMessageHandler>();
+			if(tapsellManager==null)
+			{
+				tapsellManager = new GameObject ("TapsellManager");
+				UnityEngine.Object.DontDestroyOnLoad (tapsellManager);
+				tapsellManager.AddComponent<TapsellMessageHandler>();
+			}
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			setJavaObject();
 			tapsell.CallStatic<Boolean>("initialize", key);
