@@ -121,7 +121,6 @@ public class Test : MonoBehaviour {
 			if(GUI.Button (callToActionRect, ArabicFixer.Fix(Test.nativeAd.getCallToAction (),true) ))
 			{
 				Test.nativeAd.onClicked ();
-				Tapsell.onNativeBannerAdClicked (Test.nativeAd.adId);
 			}
 		}
 		#endif
