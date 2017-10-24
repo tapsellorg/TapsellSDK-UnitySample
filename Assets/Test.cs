@@ -9,8 +9,8 @@ using ArabicSupport;
 public class Test : MonoBehaviour {
 	
 	public static bool available = false;
-	public static string ad = null;
-	public static TapsellNativeBannerResult nativeAd = null;
+	public static TapsellAd ad = null;
+	public static TapsellNativeBannerAd nativeAd = null;
 
 	void Start() {
 		// Use your tapsell key for initialization
@@ -31,11 +31,11 @@ public class Test : MonoBehaviour {
 	private void requestAd(string zone,bool cached)
 	{
 		Tapsell.requestAd(zone,cached,
-			(TapsellResult result) => {
+			(TapsellAd result) => {
 				// onAdAvailable
 				Debug.Log("Action: onAdAvailable");
 				Test.available = true;
-				Test.ad = result.adId;
+				Test.ad = result;
 			},
 
 			(string zoneId) => {
@@ -53,7 +53,7 @@ public class Test : MonoBehaviour {
 				Debug.Log("No Network: "+zoneId);
 			},
 
-			(TapsellResult result) => {
+			(TapsellAd result) => {
 				//onExpiring
 				Debug.Log("Expiring");
 				Test.available=false;
@@ -72,11 +72,11 @@ public class Test : MonoBehaviour {
 			if(GUI.Button(new Rect(250, 50, 200, 100), "Show Ad")){
 				Test.available = false;
 				TapsellShowOptions options = new TapsellShowOptions ();
-				options.backDisabled = false;
+				options.backDisabled = true;
 				options.immersiveMode = false;
 				options.rotationMode = TapsellShowOptions.ROTATION_LOCKED_LANDSCAPE;
 				options.showDialog = true;
-				Tapsell.showAd(ad,options);
+				Tapsell.showAd(ad	,options);
 			}
 		}
 		if(GUI.Button(new Rect(50, 50, 200, 100), "Request Video Ad")){
@@ -88,7 +88,7 @@ public class Test : MonoBehaviour {
 		if(Test.nativeAd==null)
 		{
 			if(GUI.Button(new Rect(50, 150, 200, 100), "Request Banner Ad")){
-				requestNativeBannerAd ("598eadad468465085986d07e");
+				requestNativeBannerAd ("59b6903e468465281bde0d25");
 			}
 		}
 		if(Test.nativeAd!=null)
@@ -130,7 +130,7 @@ public class Test : MonoBehaviour {
 	private void requestNativeBannerAd(string zone)
 	{
 		Tapsell.requestNativeBannerAd(this, zone, 
-			(TapsellNativeBannerResult result) => {
+			(TapsellNativeBannerAd result) => {
 				// onAdAvailable
 				Debug.Log("Action: onNativeRequestFilled");
 

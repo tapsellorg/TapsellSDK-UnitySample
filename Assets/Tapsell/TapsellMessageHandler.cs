@@ -19,7 +19,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	public void NotifyAdAvailable(String str){
 		debugLog("NotifyAdAvailable:"+str);
 		JSONNode node = JSON.Parse (str);
-		TapsellResult result = new TapsellResult();
+		TapsellAd result = new TapsellAd();
 		result.adId = node ["adId"].Value;
 		result.zoneId = node ["zoneId"].Value;
 		Tapsell.onAdAvailable (result);
@@ -35,7 +35,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	public void NotifyExpiring(String str){
 		debugLog("NotifyExpiring:"+str);
 		JSONNode node = JSON.Parse (str);
-		TapsellResult result = new TapsellResult();
+		TapsellAd result = new TapsellAd();
 		result.adId = node ["adId"].Value;
 		result.zoneId = node ["zoneId"].Value;
 		Tapsell.onExpiring (result);
@@ -62,7 +62,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	public void NotifyNativeBannerRequestFilled(String str){
 		debugLog("NotifyNativeBannerRequestFilled:"+str);
 		JSONNode node = JSON.Parse (str);
-		TapsellNativeBannerResult result = new TapsellNativeBannerResult();
+		TapsellNativeBannerAd result = new TapsellNativeBannerAd();
 		result.adId = node ["adId"].Value;
 		result.zoneId = node ["zoneId"].Value;
 		result.title = node ["title"].Value;
@@ -94,7 +94,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	public void NotifyOpened(String str){
 		debugLog("NotifyOpened:"+str);
 		JSONNode node = JSON.Parse (str);
-		TapsellResult result = new TapsellResult();
+		TapsellAd result = new TapsellAd();
 		result.adId = node ["adId"].Value;
 		result.zoneId = node ["zoneId"].Value;
 		Tapsell.onOpened (result);
@@ -103,7 +103,7 @@ public class TapsellMessageHandler : MonoBehaviour{
 	public void NotifyClosed(String str){
 		debugLog("NotifyClosed:"+str);
 		JSONNode node = JSON.Parse (str);
-		TapsellResult result = new TapsellResult();
+		TapsellAd result = new TapsellAd();
 		result.adId = node ["adId"].Value;
 		result.zoneId = node ["zoneId"].Value;
 		Tapsell.onClosed (result);

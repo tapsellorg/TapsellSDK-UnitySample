@@ -18,14 +18,14 @@ namespace TapsellSDK {
 	}
 
 	[Serializable]
-	public class TapsellResult
+	public class TapsellAd
 	{
 		public string adId;
 		public string zoneId;
 	}
 
 	[Serializable]
-	public class TapsellNativeBannerResult
+	public class TapsellNativeBannerAd
 	{
 		public string adId;
 		public string zoneId;
@@ -140,18 +140,18 @@ namespace TapsellSDK {
 		private static AndroidJavaClass tapsell;
 		#endif
 
-		private static Dictionary<string,Action<TapsellNativeBannerResult>> requestNativeBannerFilledPool = new Dictionary<string,Action<TapsellNativeBannerResult>>();
+		private static Dictionary<string,Action<TapsellNativeBannerAd>> requestNativeBannerFilledPool = new Dictionary<string,Action<TapsellNativeBannerAd>>();
 		private static Dictionary<string,Action<TapsellError>> requestNativeBannerErrorPool = new Dictionary<string,Action<TapsellError>>();
 		private static Dictionary<string,Action<string>> requestNativeBannerNoAdAvailablePool = new Dictionary<string,Action<string>>();
 		private static Dictionary<string,Action<string>> requestNativeBannerNoNetworkPool = new Dictionary<string,Action<string>>();
 
 		private static Dictionary<string,Action<TapsellError>> requestErrorPool = new Dictionary<string,Action<TapsellError>>();
-		private static Dictionary<string,Action<TapsellResult>> requestAdAvailablePool = new Dictionary<string,Action<TapsellResult>>();
+		private static Dictionary<string,Action<TapsellAd>> requestAdAvailablePool = new Dictionary<string,Action<TapsellAd>>();
 		private static Dictionary<string,Action<string>> requestNoAdAvailablePool = new Dictionary<string,Action<string>>();
 		private static Dictionary<string,Action<string>> requestNoNetworkPool = new Dictionary<string,Action<string>>();
-		private static Dictionary<string,Action<TapsellResult>> requestExpiringPool = new Dictionary<string,Action<TapsellResult>>();
-		private static Dictionary<string,Action<TapsellResult>> requestAdOpenedPool = new Dictionary<string,Action<TapsellResult>>();
-		private static Dictionary<string,Action<TapsellResult>> requestAdClosedPool = new Dictionary<string,Action<TapsellResult>>();
+		private static Dictionary<string,Action<TapsellAd>> requestExpiringPool = new Dictionary<string,Action<TapsellAd>>();
+		private static Dictionary<string,Action<TapsellAd>> requestAdOpenedPool = new Dictionary<string,Action<TapsellAd>>();
+		private static Dictionary<string,Action<TapsellAd>> requestAdClosedPool = new Dictionary<string,Action<TapsellAd>>();
 		private static Action<TapsellAdFinishedResult> adFinishedAction = null;//new Action<TapsellAdFinishedResult>();
 
 		#if UNITY_ANDROID && !UNITY_EDITOR
@@ -343,8 +343,8 @@ namespace TapsellSDK {
 		/// <param name="onExpiringAction">On expiring action.</param>
 		/// <param name="onOpenedAction">On opened action.</param>
 		/// <param name="onClosedAction">On closed action.</param>
-		public static bool requestAd(string zoneId, Boolean isCached, Action<TapsellResult> onAdAvailableAction, Action<string> onNoAdAvailableAction,
-			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<TapsellResult> onExpiringAction)
+		public static bool requestAd(string zoneId, Boolean isCached, Action<TapsellAd> onAdAvailableAction, Action<string> onNoAdAvailableAction,
+			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<TapsellAd> onExpiringAction)
 		{
 			return requestAd (zoneId, isCached, onAdAvailableAction, onNoAdAvailableAction, onErrorAction, onNoNetworkAction, onExpiringAction, null, null);
 		}
@@ -360,9 +360,9 @@ namespace TapsellSDK {
 		/// <param name="onErrorAction">On error action.</param>
 		/// <param name="onNoNetworkAction">On no network action.</param>
 		/// <param name="onExpiringAction">On expiring action.</param>
-		public static bool requestAd(string zoneId, Boolean isCached, Action<TapsellResult> onAdAvailableAction, Action<string> onNoAdAvailableAction,
-			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<TapsellResult> onExpiringAction, Action<TapsellResult> onOpenedAction,
-			Action<TapsellResult> onClosedAction)
+		public static bool requestAd(string zoneId, Boolean isCached, Action<TapsellAd> onAdAvailableAction, Action<string> onNoAdAvailableAction,
+			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<TapsellAd> onExpiringAction, Action<TapsellAd> onOpenedAction,
+			Action<TapsellAd> onClosedAction)
 		{
 			#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
 			string zone = zoneId;
@@ -436,7 +436,7 @@ namespace TapsellSDK {
 			#endif
 		}
 
-		public static void requestNativeBannerAd(MonoBehaviour monoBehaviour,string zoneId, Action<TapsellNativeBannerResult> onRequestFilled, Action<string> onNoAdAvailableAction,
+		public static void requestNativeBannerAd(MonoBehaviour monoBehaviour,string zoneId, Action<TapsellNativeBannerAd> onRequestFilled, Action<string> onNoAdAvailableAction,
 			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction)
 		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
@@ -473,26 +473,27 @@ namespace TapsellSDK {
 		/// <summary>
 		/// Shows the ad with specified options.
 		/// </summary>
-		/// <param name="adId">Ad identifier.</param>
+		/// <param name="tapsellAd">Tapsell ad.</param>
 		/// <param name="showOptions">Show options.</param>
-		public static void showAd(String adId, TapsellShowOptions showOptions)
+		public static void showAd(TapsellAd tapsellAd, TapsellShowOptions showOptions)
 		{
 			if(object.ReferenceEquals(showOptions,null))
 			{
 				showOptions = new TapsellShowOptions();
 			}
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic("showAd",adId,showOptions.backDisabled,showOptions.immersiveMode,showOptions.rotationMode,showOptions.showDialog);
+			requestExpiringPool.Remove(tapsellAd.zoneId);
+			tapsell.CallStatic("showAd",tapsellAd.adId,showOptions.backDisabled,showOptions.immersiveMode,showOptions.rotationMode,showOptions.showDialog);
 			#elif UNITY_IOS && !UNITY_EDITOR
 			string bDisabled = "false";
 			if(showOptions.backDisabled){
-				bDisabled = "true";
+			bDisabled = "true";
 			}
 			string sDialog = "false";
 			if(showOptions.showDialog){
-				sDialog = "true";
+			sDialog = "true";
 			}
-			_TSShowAd(adId, bDisabled, showOptions.rotationMode, sDialog);
+			_TSShowAd(tapsellAd.adId, bDisabled, showOptions.rotationMode, sDialog);
 			#endif
 		}
 
@@ -551,7 +552,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onAdAvailable(TapsellResult result)
+		public static void onAdAvailable(TapsellAd result)
 		{
 			string zone = result.zoneId;
 			if(String.IsNullOrEmpty(zone))
@@ -564,7 +565,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onExpiring(TapsellResult result)
+		public static void onExpiring(TapsellAd result)
 		{
 			string zone = result.zoneId;
 			if(String.IsNullOrEmpty(zone))
@@ -589,7 +590,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onOpened(TapsellResult result)
+		public static void onOpened(TapsellAd result)
 		{
 			string zone = result.zoneId;
 			if(String.IsNullOrEmpty(zone))
@@ -602,7 +603,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onClosed(TapsellResult result)
+		public static void onClosed(TapsellAd result)
 		{
 			string zone = result.zoneId;
 			if(String.IsNullOrEmpty(zone))
@@ -644,7 +645,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onNativeBannerRequestFilled(TapsellNativeBannerResult result)
+		public static void onNativeBannerRequestFilled(TapsellNativeBannerAd result)
 		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			string zone = result.zoneId;
@@ -677,7 +678,7 @@ namespace TapsellSDK {
 			#endif
 		}
 
-		static IEnumerator loadNativeBannerAdImages(TapsellNativeBannerResult result)
+		static IEnumerator loadNativeBannerAdImages(TapsellNativeBannerAd result)
 		{
 			if(result.iconUrl!=null && !result.iconUrl.Equals(""))
 			{

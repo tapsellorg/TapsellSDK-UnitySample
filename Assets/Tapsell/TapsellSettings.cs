@@ -5,7 +5,7 @@ using TapsellSDK;
 
 namespace TapsellSDK.Editor {
 	public class TapsellSettings{
-		private static string pluginVersion = "3.0.31";
+		private static string pluginVersion = "3.0.34";
 
 		public static string getPluginVersion()
 		{
