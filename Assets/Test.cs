@@ -15,6 +15,7 @@ public class Test : MonoBehaviour {
 	void Start() {
 		// Use your tapsell key for initialization
 		Tapsell.initialize ("mpkdstpefkoalikkgfslakdspdhikdiddkkgbfpstnaqmkqmgtasdmgtcmitlenscamnik");
+
 		Debug.Log("Tapsell Version: "+Tapsell.getVersion());
 		Tapsell.setDebugMode (true);
 		Tapsell.setPermissionHandlerConfig (Tapsell.PERMISSION_HANDLER_AUTO);
@@ -23,10 +24,66 @@ public class Test : MonoBehaviour {
 			{
 				// onFinished, you may give rewards to user if result.completed and result.rewarded are both True
 				Debug.Log ("onFinished, adId:"+result.adId+", zoneId:"+result.zoneId+", completed:"+result.completed+", rewarded:"+result.rewarded);
+				POST(result.adId);
+
 			}
 		);
+
+		Tapsell.requestBannerAd ("5a0041c8e995ee0001937574",BannerType.BANNER_320x50, Gravity.BOTTOM, Gravity.CENTER);
 	}
 
+	private string POSTAddUserURL = "http://api.tapsell.ir/v2/suggestions/validate-suggestion";
+
+	public void POST(string suggestionId)
+	{
+		//Hashtable postHeader = new Hashtable();
+		//postHeader.Add("Content-Type", "application/json");
+
+		//WWWForm form = new WWWForm();
+		//form.AddField ("suggestionId", suggestionId);
+
+		//WWW www = new WWW(POSTAddUserURL,form.data, HashtableToDictionary<string,string>(postHeader));
+		//StartCoroutine(WaitForRequest(www));
+		//return www;
+
+		try
+		{
+			Debug.Log("my start posting...");
+			string ourPostData = "{\"suggestionId\":\"" + suggestionId +"\"}";
+			Debug.Log("my  post data" + ourPostData);
+			System.Collections.Generic.Dictionary<string,string> headers = new System.Collections.Generic.Dictionary<string, string>();
+			headers.Add("Content-Type", "application/json");
+
+			byte[] pData = System.Text.Encoding.ASCII.GetBytes(ourPostData.ToCharArray());
+
+			///POST by IIS hosting...
+			WWW api = new WWW(POSTAddUserURL, pData, headers);
+
+			StartCoroutine(WaitForRequest(api));
+		}
+		catch (UnityException ex)
+		{ 
+			Debug.Log(ex.Message); 
+		}
+		return;
+
+	}
+
+	IEnumerator WaitForRequest(WWW data)
+	{
+		Debug.Log("my start waiting...");
+		yield return data; // Wait until the download is done
+		if (data.error != null)
+		{
+			Debug.Log("my server error is " + data.error);
+			//this.ShowDebug("There was an error sending request: " + data.error);
+		}
+		else
+		{
+			Debug.Log("my server result is "+data.text);
+			//MainUI.ShowDebug("WWW Request: " + data.text);
+		}
+	}
 
 	private void requestAd(string zone,bool cached)
 	{

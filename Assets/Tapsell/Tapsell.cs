@@ -110,6 +110,23 @@ namespace TapsellSDK {
 		public bool showDialog = false;
 	}
 
+	public class Gravity
+	{
+		public static int TOP = 1;
+		public static int BOTTOM = 2;
+		public static int LEFT = 3;
+		public static int RIGHT = 4;
+		public static int CENTER = 5;
+	}
+
+	public class BannerType
+	{
+		public static int BANNER_320x50 = 1;
+		public static int BANNER_320x100 = 2;
+		public static int BANNER_250x250 = 3;
+		public static int BANNER_300x250 = 4;
+	}
+
 	public class Tapsell
 	{
 
@@ -467,6 +484,21 @@ namespace TapsellSDK {
 			error.zoneId = zoneId;
 			error.error = "Native ads are only available on Android platform.";
 			onErrorAction(error);
+			#endif
+		}
+
+		public static void requestBannerAd(string zoneId,int bannerType, int horizontalGravity , int verticalGravity)
+		{
+			if (horizontalGravity == null)
+				horizontalGravity = Gravity.BOTTOM;
+
+			if (verticalGravity == null)
+				verticalGravity = Gravity.CENTER;
+			
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			tapsell.CallStatic("requestBannerAd",zoneId,bannerType,horizontalGravity,verticalGravity);
+			#else
+			Debug.LogError("Banner ad is only available on android");
 			#endif
 		}
 
