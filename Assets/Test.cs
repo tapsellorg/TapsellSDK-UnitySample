@@ -24,41 +24,29 @@ public class Test : MonoBehaviour {
 			{
 				// onFinished, you may give rewards to user if result.completed and result.rewarded are both True
 				Debug.Log ("onFinished, adId:"+result.adId+", zoneId:"+result.zoneId+", completed:"+result.completed+", rewarded:"+result.rewarded);
-				POST(result.adId);
 
+				// You can validate suggestion from you server by sending a request from your game server to tapsell, passing adId to validate it
+				if(result.completed && result.rewarded)
+				{
+					validateSuggestion(result.adId);
+				}
 			}
 		);
 
 		Tapsell.requestBannerAd ("5a0041c8e995ee0001937574",BannerType.BANNER_320x50, Gravity.BOTTOM, Gravity.CENTER);
 	}
 
-	private string POSTAddUserURL = "http://api.tapsell.ir/v2/suggestions/validate-suggestion";
-
-	public void POST(string suggestionId)
+	public void validateSuggestion(string suggestionId)
 	{
-		//Hashtable postHeader = new Hashtable();
-		//postHeader.Add("Content-Type", "application/json");
-
-		//WWWForm form = new WWWForm();
-		//form.AddField ("suggestionId", suggestionId);
-
-		//WWW www = new WWW(POSTAddUserURL,form.data, HashtableToDictionary<string,string>(postHeader));
-		//StartCoroutine(WaitForRequest(www));
-		//return www;
-
 		try
 		{
-			Debug.Log("my start posting...");
 			string ourPostData = "{\"suggestionId\":\"" + suggestionId +"\"}";
-			Debug.Log("my  post data" + ourPostData);
 			System.Collections.Generic.Dictionary<string,string> headers = new System.Collections.Generic.Dictionary<string, string>();
 			headers.Add("Content-Type", "application/json");
 
 			byte[] pData = System.Text.Encoding.ASCII.GetBytes(ourPostData.ToCharArray());
 
-			///POST by IIS hosting...
-			WWW api = new WWW(POSTAddUserURL, pData, headers);
-
+			WWW api = new WWW("http://api.tapsell.ir/v2/suggestions/validate-suggestion", pData, headers);
 			StartCoroutine(WaitForRequest(api));
 		}
 		catch (UnityException ex)
@@ -66,7 +54,6 @@ public class Test : MonoBehaviour {
 			Debug.Log(ex.Message); 
 		}
 		return;
-
 	}
 
 	IEnumerator WaitForRequest(WWW data)
@@ -76,12 +63,11 @@ public class Test : MonoBehaviour {
 		if (data.error != null)
 		{
 			Debug.Log("my server error is " + data.error);
-			//this.ShowDebug("There was an error sending request: " + data.error);
 		}
 		else
 		{
 			Debug.Log("my server result is "+data.text);
-			//MainUI.ShowDebug("WWW Request: " + data.text);
+			// if suggestion is valid, you can give in game gifts to the user
 		}
 	}
 
