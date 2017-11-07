@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using TapsellSDK;
+using TapsellSimpleJSON;
 using ArabicSupport;
 
 public class Test : MonoBehaviour {
@@ -67,7 +68,16 @@ public class Test : MonoBehaviour {
 		else
 		{
 			Debug.Log("my server result is "+data.text);
-			// if suggestion is valid, you can give in game gifts to the user
+
+			JSONNode node = JSON.Parse (data.text);
+			bool valid = node ["valid"].AsBool;
+			if (valid) {
+				// if suggestion is valid, you can give in game gifts to the user
+				Debug.Log ("Ad is valid");
+			} 
+			else {
+				Debug.Log ("Ad is not valid");
+			}
 		}
 	}
 
