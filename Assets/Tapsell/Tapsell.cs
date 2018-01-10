@@ -162,6 +162,12 @@ namespace TapsellSDK {
 		private static Dictionary<string,Action<string>> requestNativeBannerNoAdAvailablePool = new Dictionary<string,Action<string>>();
 		private static Dictionary<string,Action<string>> requestNativeBannerNoNetworkPool = new Dictionary<string,Action<string>>();
 
+		private static Dictionary<string,Action<string>> requestBannerFilledPool = new Dictionary<string,Action<string>>();
+		private static Dictionary<string,Action<TapsellError>> requestBannerErrorPool = new Dictionary<string,Action<TapsellError>>();
+		private static Dictionary<string,Action<string>> requestBannerNoAdAvailablePool = new Dictionary<string,Action<string>>();
+		private static Dictionary<string,Action<string>> requestBannerNoNetworkPool = new Dictionary<string,Action<string>>();
+		private static Dictionary<string,Action<string>> requestHideBannerPool = new Dictionary<string,Action<string>>();
+
 		private static Dictionary<string,Action<TapsellError>> requestErrorPool = new Dictionary<string,Action<TapsellError>>();
 		private static Dictionary<string,Action<TapsellAd>> requestAdAvailablePool = new Dictionary<string,Action<TapsellAd>>();
 		private static Dictionary<string,Action<string>> requestNoAdAvailablePool = new Dictionary<string,Action<string>>();
@@ -487,7 +493,8 @@ namespace TapsellSDK {
 			#endif
 		}
 
-		public static void requestBannerAd(string zoneId,int bannerType, int horizontalGravity , int verticalGravity)
+		public static void requestBannerAd(string zoneId,int bannerType, int horizontalGravity , int verticalGravity, Action<string> onRequestFilled, Action<string> onNoAdAvailableAction,
+			Action<TapsellError> onErrorAction, Action<string> onNoNetworkAction, Action<string> onHideBannerAction)
 		{
 			if (horizontalGravity == null)
 				horizontalGravity = Gravity.BOTTOM;
@@ -496,12 +503,56 @@ namespace TapsellSDK {
 				verticalGravity = Gravity.CENTER;
 			
 			#if UNITY_ANDROID && !UNITY_EDITOR
+
+			if( requestBannerFilledPool.ContainsKey (zoneId) )
+			{
+			requestBannerFilledPool.Remove(zoneId);
+			}
+			if( requestBannerErrorPool.ContainsKey (zoneId) )
+			{
+			requestBannerErrorPool.Remove(zoneId);
+			}
+			if( requestBannerNoAdAvailablePool.ContainsKey (zoneId) )
+			{
+			requestBannerNoAdAvailablePool.Remove(zoneId);
+			}
+			if( requestBannerNoNetworkPool.ContainsKey (zoneId) )
+			{
+			requestBannerNoNetworkPool.Remove(zoneId);
+			}
+			if( requestHideBannerPool.ContainsKey (zoneId) )
+			{
+			requestHideBannerPool.Remove(zoneId);
+			}
+			requestBannerFilledPool.Add (zoneId, onRequestFilled);
+			requestBannerErrorPool.Add (zoneId, onErrorAction);
+			requestBannerNoAdAvailablePool.Add (zoneId, onNoAdAvailableAction);
+			requestBannerNoNetworkPool.Add (zoneId, onNoNetworkAction);
+			requestHideBannerPool.Add (zoneId, onHideBannerAction);
+
 			tapsell.CallStatic("requestBannerAd",zoneId,bannerType,horizontalGravity,verticalGravity);
 			#else
 			Debug.LogError("Banner ad is only available on android");
 			#endif
 		}
 
+		public static void showBannerAd(string zoneId)
+		{
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			tapsell.CallStatic("showBannerAd",zoneId);
+			#else
+			Debug.LogError("Banner ad is only available on android");
+			#endif
+		}
+
+		public static void hideBannerAd(string zoneId)
+		{
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			tapsell.CallStatic("hideBannerAd",zoneId);
+			#else
+			Debug.LogError("Banner ad is only available on android");
+			#endif
+		}
 		/// <summary>
 		/// Shows the ad with specified options.
 		/// </summary>
@@ -647,6 +698,58 @@ namespace TapsellSDK {
 				requestAdClosedPool [zone] (result);
 			}
 		}
+
+
+
+
+		// banner ads
+
+		public static void onBannerError(TapsellError error)
+		{
+			string zoneId = error.zoneId;
+			if (requestBannerErrorPool.ContainsKey (zoneId))
+			{
+				requestBannerErrorPool [zoneId](error);
+			}
+		}
+
+		public static void onBannerNoAdAvailable(String zone)
+		{
+			string zoneId = zone;
+			if (requestBannerNoAdAvailablePool.ContainsKey (zoneId))
+			{
+				requestBannerNoAdAvailablePool [zoneId](zone);
+			}
+		}
+
+		public static void onBannerNoNetwork(String zone)
+		{
+			string zoneId = zone;
+			if (requestBannerNoNetworkPool.ContainsKey (zoneId))
+			{
+				requestBannerNoNetworkPool [zoneId] (zone);
+			}
+		}
+
+		public static void onBannerRequestFilled(String zone)
+		{
+			string zoneId = zone;
+			if (requestBannerFilledPool.ContainsKey (zoneId))
+			{
+				requestBannerFilledPool [zoneId] (zone);
+			}
+		}
+
+		public static void onHideBanner(String zone)
+		{
+			string zoneId = zone;
+			if (requestHideBannerPool.ContainsKey (zoneId))
+			{
+				requestHideBannerPool [zoneId] (zone);
+			}
+		}
+
+
 
 		// native ads
 

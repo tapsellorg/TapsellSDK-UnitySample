@@ -10,8 +10,10 @@ using ArabicSupport;
 public class Test : MonoBehaviour {
 	
 	public static bool available = false;
+	public static bool bannerIsHidden = true;
 	public static TapsellAd ad = null;
 	public static TapsellNativeBannerAd nativeAd = null;
+	public static string bannerZoneId = "5a0041c8e995ee0001937574";
 
 	void Start() {
 		// Use your tapsell key for initialization
@@ -34,7 +36,24 @@ public class Test : MonoBehaviour {
 			}
 		);
 
-		Tapsell.requestBannerAd ("5a0041c8e995ee0001937574",BannerType.BANNER_320x50, Gravity.BOTTOM, Gravity.CENTER);
+		Tapsell.requestBannerAd (bannerZoneId,BannerType.BANNER_320x50, Gravity.BOTTOM, Gravity.CENTER,
+		(string zoneId)=>{
+				Debug.Log("Action: onBannerRequestFilledAction");
+				bannerIsHidden = false;
+		},
+		(string zoneId)=>{
+				Debug.Log("Action: onNoBannerAdAvailableAction");
+		},
+		(TapsellError tapsellError)=>{
+				Debug.Log("Action: onBannerAdErrorAction");
+		},
+		(string zoneId)=>{
+				Debug.Log("Action: onNoNetworkAction");
+		}, 
+		(string zoneId)=>{
+				Debug.Log("Action: onHideBannerAction");
+				bannerIsHidden = true;
+		});
 	}
 
 	public void validateSuggestion(string suggestionId)
@@ -125,7 +144,7 @@ public class Test : MonoBehaviour {
 			if(GUI.Button(new Rect(250, 50, 200, 100), "Show Ad")){
 				Test.available = false;
 				TapsellShowOptions options = new TapsellShowOptions ();
-				options.backDisabled = true;
+				options.backDisabled = false;
 				options.immersiveMode = false;
 				options.rotationMode = TapsellShowOptions.ROTATION_LOCKED_LANDSCAPE;
 				options.showDialog = true;
@@ -134,6 +153,19 @@ public class Test : MonoBehaviour {
 		}
 		if(GUI.Button(new Rect(50, 50, 200, 100), "Request Video Ad")){
 			requestAd ("5873510bbc5c28f9d90ce98d",false);
+		}
+
+		if(GUI.Button(new Rect(50, 250, 200, 100), "Request Interstitial Ad")){
+			requestAd ("598eadad468465085986d07e",false);
+		}
+
+		if(GUI.Button(new Rect(50, 350, 200, 100), "Toggle Banner Visibility")){
+			if (bannerIsHidden) {
+				Tapsell.showBannerAd (bannerZoneId);
+			} else {
+				Tapsell.hideBannerAd (bannerZoneId);
+			}
+			bannerIsHidden = !bannerIsHidden;
 		}
 
 

@@ -48,6 +48,49 @@ public class TapsellMessageHandler : MonoBehaviour{
 		Tapsell.onNoNetwork (zone);
 	}
 
+
+	// banner
+
+	public void NotifyBannerError(String str){
+		debugLog("NotifyBannerError:"+str);
+		JSONNode node = JSON.Parse (str);
+		TapsellError result = new TapsellError ();
+		result.error = node ["error"].Value;
+		result.zoneId = node ["zoneId"].Value;
+		Tapsell.onBannerError (result);
+	}
+
+	public void NotifyBannerRequestFilled(String str){
+		debugLog("NotifyBannerRequestFilled:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onBannerRequestFilled (zone);
+	}
+
+	public void NotifyBannerNoAdAvailable(String str){
+		debugLog("NotifyBannerNoAdAvailable:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onBannerNoAdAvailable (zone);
+	}
+
+	public void NotifyBannerNoNetwork(String str){
+		debugLog("NotifyBannerNoNetwork:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onBannerNoNetwork (zone);
+	}
+
+	public void NotifyHideBanner(String str){
+		debugLog("NotifyHideBanner:"+str);
+		JSONNode node = JSON.Parse (str);
+		String zone = node ["zoneId"].Value;
+		Tapsell.onHideBanner (zone);
+	}
+
+
+
+
 	// native
 
 	public void NotifyNativeBannerError(String str){
