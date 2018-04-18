@@ -46,7 +46,8 @@
 
 - (void)removeCachedAd:(TapsellAd* _Nullable) ad;
 
-- (void)showAd:(NSString* _Nonnull)adId withOptions:(TSAdShowOptions* _Nullable)showOptions;
+- (void)showAd:(NSString* _Nonnull)adId
+   withOptions:(TSAdShowOptions* _Nullable)showOptions;
 
 + (NSString* _Nullable)getVersion;
 

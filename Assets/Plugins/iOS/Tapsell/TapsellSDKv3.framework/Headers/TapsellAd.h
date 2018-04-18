@@ -12,7 +12,6 @@
 #import <Foundation/Foundation.h>
 #import "TSAdRequestOptions.h"
 #import "TSAdShowOptions.h"
-#import "TSWebViewController.h"
 
 @interface TapsellAd : NSObject
 
