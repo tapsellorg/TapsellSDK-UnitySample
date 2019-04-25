@@ -1,173 +1,138 @@
 ﻿using System;
 using UnityEngine;
-using TapsellSimpleJSON;
 using TapsellSDK;
 
-public class TapsellMessageHandler : MonoBehaviour{
+public class TapsellMessageHandler : MonoBehaviour
+{
 
-	// rewarded video, interstitial video/web
+    // rewarded video, interstitial video/web
 
-	public void NotifyError(String str){
-		debugLog("NotifyError:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellError result = new TapsellError ();
-		result.error = node ["error"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onError (result);
-	}
-	
-	public void NotifyAdAvailable(String str){
-		debugLog("NotifyAdAvailable:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellAd result = new TapsellAd();
-		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onAdAvailable (result);
-	}
+    public void NotifyError(String body)
+    {
+        // debugLog("NotifyError:" + body);
+        TapsellError error = new TapsellError();
+        error = JsonUtility.FromJson<TapsellError>(body);
+        Debug.Log("notifyError: " + error.zoneId);
+        Tapsell.onError(error);
+    }
 
-	public void NotifyNoAdAvailable(String str){
-		debugLog("NotifyNoAdAvailable:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onNoAdAvailable (zone);
-	}
+    public void NotifyAdAvailable(String body)
+    {
+        TapsellAd ad = new TapsellAd();
+        ad = JsonUtility.FromJson<TapsellAd>(body);
+        Debug.Log("notifyAdAvailable: " + ad.zoneId);
+        Tapsell.onAdAvailable(ad);
+    }
 
-	public void NotifyExpiring(String str){
-		debugLog("NotifyExpiring:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellAd result = new TapsellAd();
-		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onExpiring (result);
-	}
+    public void NotifyNoAdAvailable(String zoneId)
+    {
+        Debug.Log("notifyNoAdAvailable:" + zoneId);
+        Tapsell.onNoAdAvailable(zoneId);
+    }
 
-	public void NotifyNoNetwork(String str){
-		debugLog("NotifyNoNetwork:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onNoNetwork (zone);
-	}
+    public void NotifyExpiring(String body)
+    {
+        TapsellAd ad = new TapsellAd();
+        ad = JsonUtility.FromJson<TapsellAd>(body);
+        Debug.Log("notifyExpiring: " + ad.zoneId);
+        Tapsell.onExpiring(ad);
+    }
 
+    public void NotifyNoNetwork(String zoneId)
+    {
+        Debug.Log("notifyNoNetwork: " + zoneId);
+        Tapsell.onNoNetwork(zoneId);
+    }
 
-	// banner
+    // display banner
 
-	public void NotifyBannerError(String str){
-		debugLog("NotifyBannerError:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellError result = new TapsellError ();
-		result.error = node ["error"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onBannerError (result);
-	}
+    public void NotifyBannerError(String body)
+    {
+        TapsellError error = new TapsellError();
+        error = JsonUtility.FromJson<TapsellError>(body);
+        Debug.Log("notifyBannerError: " + error.zoneId);
+        Tapsell.onBannerError(error);
+    }
 
-	public void NotifyBannerRequestFilled(String str){
-		debugLog("NotifyBannerRequestFilled:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onBannerRequestFilled (zone);
-	}
+    public void NotifyBannerRequestFilled(String zoneId)
+    {
+        Debug.Log("notifyBannerRequestFilled: " + zoneId);
+        Tapsell.onBannerRequestFilled(zoneId);
+    }
 
-	public void NotifyBannerNoAdAvailable(String str){
-		debugLog("NotifyBannerNoAdAvailable:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onBannerNoAdAvailable (zone);
-	}
+    public void NotifyBannerNoAdAvailable(String zoneId)
+    {
+        Debug.Log("notifyBannerNoAdAvailable: " + zoneId);
+        Tapsell.onBannerNoAdAvailable(zoneId);
+    }
 
-	public void NotifyBannerNoNetwork(String str){
-		debugLog("NotifyBannerNoNetwork:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onBannerNoNetwork (zone);
-	}
+    public void NotifyBannerNoNetwork(String zoneId)
+    {
+        Debug.Log("notifyBannerNoNetwork: " + zoneId);
+        Tapsell.onBannerNoNetwork(zoneId);
+    }
 
-	public void NotifyHideBanner(String str){
-		debugLog("NotifyHideBanner:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onHideBanner (zone);
-	}
+    public void NotifyHideBanner(String zoneId)
+    {
+        Debug.Log("notifyHideBanner:" + zoneId);
+        Tapsell.onHideBanner(zoneId);
+    }
 
+    // native banner
 
+    public void NotifyNativeBannerError(String body)
+    {
+        TapsellError error = new TapsellError();
+        error = JsonUtility.FromJson<TapsellError>(body);
+        Debug.Log("notifyNativeBannerError: " + error.zoneId);
+        Tapsell.onNativeBannerError(error);
+    }
 
+    public void NotifyNativeBannerRequestFilled(String body)
+    {
+        TapsellNativeBannerAd bannerAd = new TapsellNativeBannerAd();
+        bannerAd = JsonUtility.FromJson<TapsellNativeBannerAd>(body);
+        Debug.Log("notifyNativeBannerRequestFilled: " + bannerAd.zoneId);
+        Tapsell.onNativeBannerRequestFilled(bannerAd);
+    }
 
-	// native
+    public void NotifyNativeBannerNoAdAvailable(String zoneId)
+    {
+        Debug.Log("notifyNativeBannerNoAdAvailable:" + zoneId);
+        Tapsell.onNativeBannerNoAdAvailable(zoneId);
+    }
 
-	public void NotifyNativeBannerError(String str){
-		debugLog("NotifyNativeBannerError:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellError result = new TapsellError ();
-		result.error = node ["error"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onNativeBannerError (result);
-	}
+    public void NotifyNativeBannerNoNetwork(String zoneId)
+    {
+        Debug.Log("notifyNativeBannerNoNetwork:" + zoneId);
+        Tapsell.onNativeBannerNoNetwork(zoneId);
+    }
 
-	public void NotifyNativeBannerRequestFilled(String str){
-		debugLog("NotifyNativeBannerRequestFilled:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellNativeBannerAd result = new TapsellNativeBannerAd();
-		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		result.title = node ["title"].Value;
-		result.description = node ["description"].Value;
-		result.iconUrl = node ["iconUrl"].Value;
-		result.callToActionText = node ["callToActionText"].Value;
-		result.portraitStaticImageUrl = node ["portraitStaticImageUrl"].Value;
-		result.landscapeStaticImageUrl = node ["landscapeStaticImageUrl"].Value;
-		Tapsell.onNativeBannerRequestFilled (result);
-	}
+    // ad open, close and reward
 
-	public void NotifyNativeBannerNoAdAvailable(String str){
-		debugLog("NotifyNativeBannerNoAdAvailable:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onNativeBannerNoAdAvailable (zone);
-	}
+    public void NotifyOpened(String body)
+    {
+        TapsellAd ad = new TapsellAd();
+        ad = JsonUtility.FromJson<TapsellAd>(body);
+        Debug.Log("notifyOpened: " + ad.zoneId);
+        Tapsell.onOpened(ad);
+    }
 
-	public void NotifyNativeBannerNoNetwork(String str){
-		debugLog("NotifyNativeBannerNoNetwork:"+str);
-		JSONNode node = JSON.Parse (str);
-		String zone = node ["zoneId"].Value;
-		Tapsell.onNativeBannerNoNetwork (zone);
-	}
+    public void NotifyClosed(String body)
+    {
+        TapsellAd ad = new TapsellAd();
+        ad = JsonUtility.FromJson<TapsellAd>(body);
+        Debug.Log("notifyClosed: " + ad.zoneId);
+        Tapsell.onClosed(ad);
+    }
 
-
-	// ad open, close and reward
-
-	public void NotifyOpened(String str){
-		debugLog("NotifyOpened:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellAd result = new TapsellAd();
-		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onOpened (result);
-	}
-
-	public void NotifyClosed(String str){
-		debugLog("NotifyClosed:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellAd result = new TapsellAd();
-		result.adId = node ["adId"].Value;
-		result.zoneId = node ["zoneId"].Value;
-		Tapsell.onClosed (result);
-	}
-
-	public void NotifyAdShowFinished(String str)
-	{
-		debugLog("NotifyAdShowFinished:"+str);
-		JSONNode node = JSON.Parse (str);
-		TapsellAdFinishedResult result = new TapsellAdFinishedResult ();
-		result.adId=node["adId"].Value;
-		result.zoneId=node["zoneId"].Value;
-		result.completed=node["completed"].AsBool;
-		result.rewarded=node["rewarded"].AsBool;
-		Tapsell.onAdShowFinished (result);
-	}
-
-	public void debugLog(String str)
-	{
-		Debug.Log (str);
-	}
+    public void NotifyAdShowFinished(String body)
+    {
+        TapsellAdFinishedResult ad = new TapsellAdFinishedResult();
+        ad = JsonUtility.FromJson<TapsellAdFinishedResult>(body);
+        Debug.Log("notifyAdShowFinished: " + ad.zoneId);
+        Tapsell.onAdShowFinished(ad);
+    }
 
 }
 
