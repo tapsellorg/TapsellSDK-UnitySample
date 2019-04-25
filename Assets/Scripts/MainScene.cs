@@ -8,11 +8,11 @@ using UnityEngine.SceneManagement;
 
 public class MainScene : MonoBehaviour
 {
-    private static string Tapsell_Key = "kilkhmaqckffopkpfnacjkobgrgnidkphkcbtmbcdhiokqetigljpnnrbfbnpnhmeikjbq";
+    private static string TAPSELL_KEY = "kilkhmaqckffopkpfnacjkobgrgnidkphkcbtmbcdhiokqetigljpnnrbfbnpnhmeikjbq";
 
     void Start()
     {
-        Tapsell.initialize(Tapsell_Key);
+        Tapsell.initialize(TAPSELL_KEY);
         Debug.Log("Tapsell Version: " + Tapsell.getVersion());
         Tapsell.setDebugMode(true);
     }

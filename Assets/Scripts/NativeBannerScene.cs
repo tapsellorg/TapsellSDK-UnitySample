@@ -42,7 +42,7 @@ public class NativeBannerScene : MonoBehaviour
 
     void OnGUI()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
+        #if UNITY_ANDROID && !UNITY_EDITOR
 		if (NativeBannerScene.nativeAd != null) {
 			GUIStyle titleStyle = new GUIStyle ();
 			titleStyle.alignment = TextAnchor.UpperRight;
@@ -76,6 +76,6 @@ public class NativeBannerScene : MonoBehaviour
 				NativeBannerScene.nativeAd.onClicked();
 			}
 		}
-#endif
+        #endif
     }
 }

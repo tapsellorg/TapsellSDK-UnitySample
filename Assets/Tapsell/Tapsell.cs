@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,8 +22,8 @@ namespace TapsellSDK
     [Serializable]
     public class TapsellAd
     {
-        public string adId;
         public string zoneId;
+		public string adId;
     }
 
     [Serializable]
@@ -868,30 +869,40 @@ namespace TapsellSDK
         {
             if (result.iconUrl != null && !result.iconUrl.Equals(""))
             {
-                WWW wwwIcon = new WWW(result.iconUrl);
-                yield return wwwIcon;
-                if (wwwIcon.texture != null)
-                {
-                    result.iconImage = wwwIcon.texture;
-                }
+				// UnityWebRequest icon = new UnityWebRequest(result.iconUrl);
+				UnityWebRequest icon = UnityWebRequestTexture.GetTexture(result.iconUrl);
+        		yield return icon.SendWebRequest();
+        		result.iconImage = DownloadHandlerTexture.GetContent(icon);
+                // WWW icon = new WWW(result.iconUrl);
+                // yield return icon;
+                // if (icon.texture != null)
+                // {
+                //     result.iconImage = icon.texture;
+                // }
             }
             if (result.portraitStaticImageUrl != null && !result.portraitStaticImageUrl.Equals(""))
             {
-                WWW wwwPortrait = new WWW(result.portraitStaticImageUrl);
-                yield return wwwPortrait;
-                if (wwwPortrait.texture != null)
-                {
-                    result.portraitBannerImage = wwwPortrait.texture;
-                }
+                UnityWebRequest portrait = UnityWebRequestTexture.GetTexture(result.portraitStaticImageUrl);
+				yield return portrait.SendWebRequest();
+				result.portraitBannerImage = DownloadHandlerTexture.GetContent(portrait);
+				// WWW wwwPortrait = new WWW(result.portraitStaticImageUrl);
+                // yield return wwwPortrait;
+                // if (wwwPortrait.texture != null)
+                // {
+                //     result.portraitBannerImage = wwwPortrait.texture;
+                // }
             }
             if (result.landscapeStaticImageUrl != null && !result.landscapeStaticImageUrl.Equals(""))
             {
-                WWW wwwLandscape = new WWW(result.landscapeStaticImageUrl);
-                yield return wwwLandscape;
-                if (wwwLandscape.texture != null)
-                {
-                    result.landscapeBannerImage = wwwLandscape.texture;
-                }
+                UnityWebRequest landscape = UnityWebRequestTexture.GetTexture(result.landscapeStaticImageUrl);
+				yield return landscape.SendWebRequest();
+				result.landscapeBannerImage = DownloadHandlerTexture.GetContent(landscape);
+				// WWW wwwLandscape = new WWW(result.landscapeStaticImageUrl);
+                // yield return wwwLandscape;
+                // if (wwwLandscape.texture != null)
+                // {
+                //     result.landscapeBannerImage = wwwLandscape.texture;
+                // }
             }
             string zone = result.zoneId;
             if (requestNativeBannerFilledPool.ContainsKey(zone))
