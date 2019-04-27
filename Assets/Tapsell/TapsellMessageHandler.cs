@@ -114,7 +114,7 @@ public class TapsellMessageHandler : MonoBehaviour
     {
         TapsellAd ad = new TapsellAd();
         ad = JsonUtility.FromJson<TapsellAd>(body);
-        Debug.Log("notifyOpened: " + body);
+        Debug.Log("notifyOpened: " + ad.zoneId);
         Tapsell.onOpened(ad);
     }
 

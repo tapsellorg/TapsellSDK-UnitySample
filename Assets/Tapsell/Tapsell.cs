@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TapsellSDK.Editor;
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System.Runtime.InteropServices;
@@ -15,8 +16,8 @@ namespace TapsellSDK
     [Serializable]
     public class TapsellError
     {
-        public string message;
         public string zoneId;
+        public string message;
     }
 
     [Serializable]
@@ -92,8 +93,8 @@ namespace TapsellSDK
     [Serializable]
     public class TapsellAdFinishedResult
     {
-        public string adId;
         public string zoneId;
+        public string adId;
         public bool completed;
         public bool rewarded;
     }
@@ -178,6 +179,7 @@ namespace TapsellSDK
         private static Dictionary<string, Action<TapsellAd>> requestAdOpenedPool = new Dictionary<string, Action<TapsellAd>>();
         private static Dictionary<string, Action<TapsellAd>> requestAdClosedPool = new Dictionary<string, Action<TapsellAd>>();
         private static Action<TapsellAdFinishedResult> adFinishedAction = null;//new Action<TapsellAdFinishedResult>();
+		private static string pluginVersion = TapsellSettings.getPluginVersion();
 
 		#if UNITY_ANDROID && !UNITY_EDITOR
 		private static MonoBehaviour mMonoBehaviour;
@@ -190,8 +192,8 @@ namespace TapsellSDK
         /// <summary>
         /// Initializes Tapsell SDK with the specified key.
         /// </summary>
-        /// <param name="key">Key.</param>
-        public static void initialize(string key)
+        /// <param name="appKey">Key.</param>
+        public static void initialize(string appKey)
         {
             if (tapsellManager == null)
             {
@@ -201,7 +203,7 @@ namespace TapsellSDK
             }
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			setJavaObject();
-			tapsell.CallStatic<Boolean>("initialize", key);
+			tapsell.CallStatic<Boolean>("initialize", appKey, Tapsell.pluginVersion);
 			#elif UNITY_IOS && !UNITY_EDITOR
 			_TSInitialize(key);
 			#endif
@@ -232,23 +234,6 @@ namespace TapsellSDK
 			#endif
         }
 
-        [System.Obsolete("isAdReadyToShow is deprecated and doesn't work on iOS sdk.")]
-        /// <summary>
-        /// Is the ad ready to show. Only for Android SDK.
-        /// </summary>
-        /// <returns><c>true</c>, if ad ready to show was ised, <c>false</c> otherwise.</returns>
-        /// <param name="zoneId">Zone identifier.</param>
-        public static bool isAdReadyToShow(String zoneId)
-        {
-			#if UNITY_ANDROID && !UNITY_EDITOR
-			return tapsell.CallStatic<Boolean>("isAdReadyToShow", zoneId);
-			#elif UNITY_IOS && !UNITY_EDITOR
-			return false;
-			#else
-            return false;
-			#endif
-        }
-
         public static bool isDebugMode()
         {
 			#if UNITY_ANDROID && !UNITY_EDITOR
@@ -259,34 +244,6 @@ namespace TapsellSDK
             return false;
 			#endif
 
-        }
-
-        /// <summary>
-        /// Sets the app user identifier.
-        /// </summary>
-        /// <param name="appUserId">App user identifier.</param>
-        public static void setAppUserId(string appUserId)
-        {
-			#if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic("setAppUserId", appUserId);
-			#elif UNITY_IOS && !UNITY_EDITOR
-			_TSSetAppUserId(appUserId);
-			#endif
-        }
-
-        /// <summary>
-        /// Gets the app user identifier.
-        /// </summary>
-        /// <returns>The app user identifier.</returns>
-        public static string getAppUserId()
-        {
-			#if UNITY_ANDROID && !UNITY_EDITOR
-			return tapsell.CallStatic<String>("getAppUserId");
-			#elif UNITY_IOS && !UNITY_EDITOR
-			return _TSGetAppUserId();
-			#else
-            return null;
-			#endif
         }
 
         /// <summary>
@@ -583,19 +540,19 @@ namespace TapsellSDK
 			#endif
         }
 
-        public static void showBannerAd(string zoneId)
+		public static void hideBannerAd(string zoneId)
         {
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic("showBannerAd", zoneId);
+			tapsell.CallStatic("hideBannerAd", zoneId);
 			#else
             Debug.LogError("Banner ad is only available on android");
 			#endif
         }
 
-        public static void hideBannerAd(string zoneId)
+        public static void showBannerAd(string zoneId)
         {
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic("hideBannerAd", zoneId);
+			tapsell.CallStatic("showBannerAd", zoneId);
 			#else
             Debug.LogError("Banner ad is only available on android");
 			#endif
