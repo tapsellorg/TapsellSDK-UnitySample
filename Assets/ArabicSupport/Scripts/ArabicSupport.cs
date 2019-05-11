@@ -155,8 +155,7 @@ internal enum IsolatedArabicLetters
 	Noon = 0xFEE5,
 	Ha = 0xFEE9,
 	Waw = 0xFEED,
-	Ya = 0xFBFC,//0xFEF1,
-	Ya2 = 0xFBFC,//0xFEF1,
+	Ya = 0xFEF1,
 	AlefMad = 0xFE81,
 	TaMarboota = 0xFE93,
 	PersianPe = 0xFB56,  	// Persian Letters;
@@ -206,7 +205,6 @@ internal enum GeneralArabicLetters
 	Ha = 0x0647,
 	Waw = 0x0648,
 	Ya = 0x064A,
-	Ya2 = 0x06CC,
 	AlefMad = 0x0622,
 	TaMarboota = 0x0629,
 	PersianPe = 0x067E,		// Persian Letters;
@@ -283,7 +281,6 @@ internal class ArabicTable
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.Ha, (int)IsolatedArabicLetters.Ha));
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.Waw, (int)IsolatedArabicLetters.Waw));
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.Ya, (int)IsolatedArabicLetters.Ya));
-		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.Ya2, (int)IsolatedArabicLetters.Ya2));
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.AlefMad, (int)IsolatedArabicLetters.AlefMad));
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.TaMarboota, (int)IsolatedArabicLetters.TaMarboota));		
 		mapList.Add(new ArabicMapping((int)GeneralArabicLetters.PersianPe, (int)IsolatedArabicLetters.PersianPe)); 		// Persian Letters;
@@ -351,35 +348,85 @@ internal class ArabicFixerTool
 	{
 		tashkeelLocation = new List<TashkeelLocation>();
 		char[] letters = str.ToCharArray();
-		for (int i = 0; i < letters.Length; i++)
-		{
-			if(letters[i] == (char)0x064B) // Tanween Fatha
-				tashkeelLocation.Add(new TashkeelLocation((char)0x064B, i));
-			else if(letters[i] == (char)0x064C) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x064C, i));
-			else if(letters[i] == (char)0x064D) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x064D, i));
-			else if(letters[i] == (char)0x064E) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x064E, i));
-			else if(letters[i] == (char)0x064F) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x064F, i));
-			else if(letters[i] == (char)0x0650) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x0650, i));
-			else if(letters[i] == (char)0x0651) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x0651, i));
-			else if(letters[i] == (char)0x0652) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x0652, i));
-			else if(letters[i] == (char)0x0653) // Shaddah
-				tashkeelLocation.Add(new TashkeelLocation((char)0x0653, i));
-			
-			
-			
+
+		int index = 0;
+		for (int i = 0; i < letters.Length; i++) {
+			if (letters [i] == (char)0x064B) { // Tanween Fatha
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x064B, i));
+				index++;
+			} else if (letters [i] == (char)0x064C) { // DAMMATAN
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x064C, i));
+				index++;
+			} else if (letters [i] == (char)0x064D){ // KASRATAN
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x064D, i));
+				index++;
+			}else if (letters [i] == (char)0x064E) { // FATHA
+				if(index > 0)
+				{
+					if(tashkeelLocation[index-1].tashkeel == (char)0x0651 ) // SHADDA
+					{
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC60; // Shadda With Fatha
+						continue;
+					}
+				}
+
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x064E, i));
+				index++;
+			} else if (letters [i] == (char)0x064F) { // DAMMA
+				if (index > 0) {
+					if (tashkeelLocation [index - 1].tashkeel == (char)0x0651) { // SHADDA
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC61; // Shadda With DAMMA
+						continue;
+					}
+				}
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x064F, i));
+				index++;
+			} else if (letters [i] == (char)0x0650) { // KASRA
+				if (index > 0) {
+					if (tashkeelLocation [index - 1].tashkeel == (char)0x0651) { // SHADDA
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC62; // Shadda With KASRA
+						continue;
+					}
+				}
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x0650, i));
+				index++;
+			} else if (letters [i] == (char)0x0651) { // SHADDA
+				if(index > 0)
+				{
+					if(tashkeelLocation[index-1].tashkeel == (char)0x064E ) // FATHA
+					{
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC60; // Shadda With Fatha
+						continue;
+					}
+
+					if(tashkeelLocation[index-1].tashkeel == (char)0x064F ) // DAMMA
+					{
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC61; // Shadda With DAMMA
+						continue;
+					}
+
+					if(tashkeelLocation[index-1].tashkeel == (char)0x0650 ) // KASRA
+					{
+						tashkeelLocation [index - 1].tashkeel = (char)0xFC62; // Shadda With KASRA
+						continue;
+					}
+				}
+
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x0651, i));
+				index++;
+			} else if (letters [i] == (char)0x0652) { // SUKUN
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x0652, i));
+				index++;
+			} else if (letters [i] == (char)0x0653) { // MADDAH ABOVE
+				tashkeelLocation.Add (new TashkeelLocation ((char)0x0653, i));
+				index++;
+			}
 		}
 		
 		string[] split = str.Split(new char[]{(char)0x064B,(char)0x064C,(char)0x064D,
 			(char)0x064E,(char)0x064F,(char)0x0650,
-			(char)0x0651,(char)0x0652,(char)0x0653,});
 		
+			(char)0x0651,(char)0x0652,(char)0x0653,(char)0xFC60,(char)0xFC61,(char)0xFC62});
 		str = "";
 		
 		foreach(string s in split)
@@ -694,9 +741,10 @@ internal class ArabicFixerTool
 				|| letters[index - 1] == (int)IsolatedArabicLetters.PersianZe
 				//|| letters[index - 1] == (int)IsolatedArabicLetters.AlefMaksora 
 				|| letters[index - 1] == (int)IsolatedArabicLetters.Waw
-				|| letters[index - 1] == (int)IsolatedArabicLetters.AlefMad 
-				|| letters[index - 1] == (int)IsolatedArabicLetters.AlefHamza
-				|| letters[index - 1] == (int)IsolatedArabicLetters.AlefMaksoor 
+				|| letters[index - 1] == (int)IsolatedArabicLetters.AlefMad
+                || letters[index - 1] == (int)IsolatedArabicLetters.AlefHamza
+                || letters[index - 1] == (int)IsolatedArabicLetters.Hamza
+                || letters[index - 1] == (int)IsolatedArabicLetters.AlefMaksoor 
 				|| letters[index - 1] == (int)IsolatedArabicLetters.WawHamza;
 
 		bool lettersThatCannotBeALeadingLetter = letters[index] != ' ' 
