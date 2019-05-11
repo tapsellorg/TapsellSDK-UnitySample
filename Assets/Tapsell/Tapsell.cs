@@ -47,8 +47,6 @@ namespace TapsellSDK {
 		public string portraitStaticImageUrl;
 		public string landscapeStaticImageUrl;
 
-		public bool shownReported = false;
-
 		public Texture2D portraitBannerImage;
 		public Texture2D landscapeBannerImage;
 		public Texture2D iconImage;
@@ -75,13 +73,6 @@ namespace TapsellSDK {
 
 		public Texture2D getIcon () {
 			return iconImage;
-		}
-
-		public void onShown () {
-			if (!this.shownReported) {
-				Tapsell.onNativeBannerAdShown (this.adId);
-				this.shownReported = true;
-			}
 		}
 
 		public void onClicked () {
@@ -173,7 +164,7 @@ namespace TapsellSDK {
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 			setJavaObject ();
-			tapsell.CallStatic ("initialize", key);
+			tapsell.CallStatic ("initialize", key, "3.3.3");
 #elif UNITY_IOS && !UNITY_EDITOR
 			_TSInitialize (key);
 #endif
@@ -293,7 +284,7 @@ namespace TapsellSDK {
 #endif
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic ("requestAd", zone, isCached);
+			tapsell.CallStatic ("requestAd", zoneId, isCached);
 
 #elif UNITY_IOS && !UNITY_EDITOR
 			string cached = "false";
@@ -532,15 +523,15 @@ namespace TapsellSDK {
 				if (mMonoBehaviour != null && mMonoBehaviour.isActiveAndEnabled) {
 					mMonoBehaviour.StartCoroutine (loadNativeBannerAdImages (result));
 				} else {
-					if (requestNativeBannerErrorPool.ContainsKey (zoneId)) {
+					if (errorPool.ContainsKey (zoneId)) {
 						TapsellError error = new TapsellError ();
 						error.zoneId = zoneId;
-						error.error = "Invalid MonoBehaviour Object";
+						error.message = "Invalid MonoBehaviour Object";
 						errorPool[zoneId] (error);
 					}
 				}
 			} else {
-				if (requestNativeBannerErrorPool.ContainsKey (zoneId)) {
+				if (errorPool.ContainsKey (zoneId)) {
 					TapsellError error = new TapsellError ();
 					error.zoneId = zoneId;
 					error.message = "Invalid Result";
