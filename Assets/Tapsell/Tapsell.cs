@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System.Runtime.InteropServices;
@@ -188,7 +189,6 @@ namespace TapsellSDK {
 #endif
 		}
 
-
 		public static void setMaxAllowedBandwidthUsage (int maxBpsSpeed) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("setMaxAllowedBandwidthUsage", maxBpsSpeed);
@@ -352,12 +352,6 @@ namespace TapsellSDK {
 			Action<string> onNoNetworkAction,
 			Action<string> onHideBannerAction) {
 
-			if (horizontalGravity == null)
-				horizontalGravity = Gravity.BOTTOM;
-
-			if (verticalGravity == null)
-				verticalGravity = Gravity.CENTER;
-
 #if UNITY_ANDROID && !UNITY_EDITOR
 
 			if (bannerFilledPool.ContainsKey (zoneId)) {
@@ -410,6 +404,11 @@ namespace TapsellSDK {
 		}
 
 		public static void showAd (
+			TapsellAd tapsellAd) {
+			showAd (tapsellAd, null);
+		}
+
+		public static void showAd (
 			TapsellAd tapsellAd,
 			TapsellShowOptions showOptions) {
 			if (object.ReferenceEquals (showOptions, null)) {
@@ -454,7 +453,6 @@ namespace TapsellSDK {
 			return "NO SDK";
 #endif
 		}
-
 
 		public static void onAdAvailable (TapsellAd result) {
 			if (adFilledPool.ContainsKey (result.zoneId)) {
@@ -515,7 +513,6 @@ namespace TapsellSDK {
 			}
 		}
 
-
 		public static void onNativeBannerFilled (TapsellNativeBannerAd result) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			string zoneId = result.zoneId;
@@ -543,11 +540,11 @@ namespace TapsellSDK {
 
 		static IEnumerator loadNativeBannerAdImages (TapsellNativeBannerAd result) {
 			if (result.iconUrl != null && !result.iconUrl.Equals ("")) {
-				WWW wwwIcon = new WWW (result.iconUrl);
-				yield return wwwIcon;
-				if (wwwIcon.texture != null) {
-					result.iconImage = wwwIcon.texture;
-				}
+				UnityWebRequest wwwIcon = UnityWebRequest.Get (result.iconUrl);
+				yield return wwwIcon.SendWebRequest ();
+				// if (wwwIcon.texture != null) {
+				// result.iconImage = wwwIcon.texture;
+				// }
 			}
 			if (result.portraitStaticImageUrl != null && !result.portraitStaticImageUrl.Equals ("")) {
 				WWW wwwPortrait = new WWW (result.portraitStaticImageUrl);
@@ -563,7 +560,7 @@ namespace TapsellSDK {
 					result.landscapeBannerImage = wwwLandscape.texture;
 				}
 			}
-			
+
 			if (nativeBannerFilledPool.ContainsKey (result.zoneId)) {
 				nativeBannerFilledPool[result.zoneId] (result);
 			}

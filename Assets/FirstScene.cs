@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TapsellSDK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TapsellSDK;
 
 public class FirstScene : MonoBehaviour {
 
