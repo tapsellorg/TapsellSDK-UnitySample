@@ -197,21 +197,6 @@ namespace TapsellSDK {
 #endif
 		}
 
-		[System.Obsolete ("isAdReadyToShow is deprecated and doesn't work on iOS sdk.")]
-		/// <summary>
-		/// Is the ad ready to show. Only for Android SDK.
-		/// </summary>
-		/// <returns><c>true</c>, if ad ready to show was ised, <c>false</c> otherwise.</returns>
-		/// <param name="zoneId">Zone identifier.</param>
-		public static bool isAdReadyToShow (String zoneId) {
-#if UNITY_ANDROID && !UNITY_EDITOR
-			return tapsell.CallStatic<Boolean> ("isAdReadyToShow", zoneId);
-#elif UNITY_IOS && !UNITY_EDITOR
-			return false;
-#else
-			return false;
-#endif
-		}
 
 		public static void setMaxAllowedBandwidthUsage (int maxBpsSpeed) {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -319,7 +304,7 @@ namespace TapsellSDK {
 #else
 			TapsellError error = new TapsellError ();
 			error.zoneId = zoneId;
-			error.error = "Tapsell ads are only available on Android and iOS platforms.";
+			error.message = "Tapsell ads are only available on Android and iOS platforms.";
 			onErrorAction (error);
 #endif
 		}
@@ -360,7 +345,7 @@ namespace TapsellSDK {
 #else
 			TapsellError error = new TapsellError ();
 			error.zoneId = zoneId;
-			error.error = "Native ads are only available on Android platform.";
+			error.message = "Native ads are only available on Android platform.";
 			onErrorAction (error);
 #endif
 		}
@@ -412,7 +397,7 @@ namespace TapsellSDK {
 
 			TapsellError error = new TapsellError ();
 			error.zoneId = zoneId;
-			error.error = "Banner ad is only available on android";
+			error.message = "Banner ad is only available on android";
 			onErrorAction (error);
 #endif
 		}
@@ -540,26 +525,26 @@ namespace TapsellSDK {
 		}
 
 
-		public static void onNativeBannerRequestFilled (TapsellNativeBannerAd result) {
+		public static void onNativeBannerFilled (TapsellNativeBannerAd result) {
 #if UNITY_ANDROID && !UNITY_EDITOR
-			string zone = result.zoneId;
+			string zoneId = result.zoneId;
 			if (result != null) {
 				if (mMonoBehaviour != null && mMonoBehaviour.isActiveAndEnabled) {
 					mMonoBehaviour.StartCoroutine (loadNativeBannerAdImages (result));
 				} else {
-					if (requestNativeBannerErrorPool.ContainsKey (zone)) {
+					if (requestNativeBannerErrorPool.ContainsKey (zoneId)) {
 						TapsellError error = new TapsellError ();
-						error.zoneId = zone;
+						error.zoneId = zoneId;
 						error.error = "Invalid MonoBehaviour Object";
-						requestNativeBannerErrorPool[zone] (error);
+						errorPool[zoneId] (error);
 					}
 				}
 			} else {
-				if (requestNativeBannerErrorPool.ContainsKey (zone)) {
+				if (requestNativeBannerErrorPool.ContainsKey (zoneId)) {
 					TapsellError error = new TapsellError ();
-					error.zoneId = zone;
-					error.error = "Invalid Result";
-					requestNativeBannerErrorPool[zone] (error);
+					error.zoneId = zoneId;
+					error.message = "Invalid Result";
+					errorPool[zoneId] (error);
 				}
 			}
 #endif
@@ -587,21 +572,15 @@ namespace TapsellSDK {
 					result.landscapeBannerImage = wwwLandscape.texture;
 				}
 			}
-			string zone = result.zoneId;
-			if (requestNativeBannerFilledPool.ContainsKey (zone)) {
-				requestNativeBannerFilledPool[zone] (result);
+			
+			if (nativeBannerFilledPool.ContainsKey (result.zoneId)) {
+				nativeBannerFilledPool[result.zoneId] (result);
 			}
 		}
 
 		public static void onNativeBannerAdClicked (string adId) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("onNativeBannerAdClicked", adId);
-#endif
-		}
-
-		public static void onNativeBannerAdShown (string adId) {
-#if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic ("onNativeBannerAdShown", adId);
 #endif
 		}
 	}
