@@ -52,32 +52,32 @@ namespace TapsellSDK {
 		public Texture2D landscapeBannerImage;
 		public Texture2D iconImage;
 
-		public string getTitle () {
+		public string GetTitle () {
 			return title;
 		}
 
-		public string getDescription () {
+		public string GetDescription () {
 			return description;
 		}
 
-		public string getCallToAction () {
+		public string GetCallToAction () {
 			return callToActionText;
 		}
 
-		public Texture2D getPortraitBannerImage () {
+		public Texture2D GetPortraitBannerImage () {
 			return portraitBannerImage;
 		}
 
-		public Texture2D getLandscapeBannerImage () {
+		public Texture2D GetLandscapeBannerImage () {
 			return landscapeBannerImage;
 		}
 
-		public Texture2D getIcon () {
+		public Texture2D GetIcon () {
 			return iconImage;
 		}
 
-		public void onClicked () {
-			Tapsell.onNativeBannerAdClicked (this.adId);
+		public void OnClicked () {
+			Tapsell.OnNativeBannerAdClicked (this.adId);
 		}
 	}
 
@@ -156,7 +156,7 @@ namespace TapsellSDK {
 
 		private static GameObject tapsellManager = null;
 
-		public static void initialize (string key) {
+		public static void Initialize (string key) {
 			if (tapsellManager == null) {
 				tapsellManager = new GameObject ("TapsellManager");
 				UnityEngine.Object.DontDestroyOnLoad (tapsellManager);
@@ -164,20 +164,20 @@ namespace TapsellSDK {
 			}
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-			setJavaObject ();
+			SetJavaObject ();
 			tapsell.CallStatic ("initialize", key, "3.3.3");
 #elif UNITY_IOS && !UNITY_EDITOR
 			_TSInitialize (key);
 #endif
 		}
 
-		private static void setJavaObject () {
+		private static void SetJavaObject () {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell = new AndroidJavaClass ("ir.tapsell.sdk.TapsellUnity");
 #endif
 		}
 
-		public static void setDebugMode (bool debug) {
+		public static void SetDebugMode (bool debug) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("setDebugMode", debug);
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -189,7 +189,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void setMaxAllowedBandwidthUsage (int maxBpsSpeed) {
+		public static void SetMaxAllowedBandwidthUsage (int maxBpsSpeed) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("setMaxAllowedBandwidthUsage", maxBpsSpeed);
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -197,7 +197,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void setMaxAllowedBandwidthUsagePercentage (int maxPercentage) {
+		public static void SetMaxAllowedBandwidthUsagePercentage (int maxPercentage) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("setMaxAllowedBandwidthUsagePercentage", maxPercentage);
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -205,7 +205,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void clearBandwidthUsageConstrains () {
+		public static void ClearBandwidthUsageConstrains () {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("clearBandwidthUsageConstrains");
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -213,7 +213,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void requestAd (
+		public static void RequestAd (
 			string zoneId,
 			Boolean isCached,
 			Action<TapsellAd> onAdAvailableAction,
@@ -222,12 +222,12 @@ namespace TapsellSDK {
 			Action<string> onNoNetworkAction,
 			Action<TapsellAd> onExpiringAction) {
 
-			requestAd (
+			RequestAd (
 				zoneId, isCached, onAdAvailableAction, onNoAdAvailableAction, onErrorAction,
 				onNoNetworkAction, onExpiringAction, null, null);
 		}
 
-		public static void requestAd (
+		public static void RequestAd (
 			string zoneId,
 			Boolean isCached,
 			Action<TapsellAd> onAdAvailableAction,
@@ -300,7 +300,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void requestNativeBannerAd (
+		public static void RequestNativeBannerAd (
 			MonoBehaviour monoBehaviour,
 			string zoneId,
 			Action<TapsellNativeBannerAd> onRequestFilled,
@@ -341,7 +341,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void requestBannerAd (
+		public static void RequestBannerAd (
 			string zoneId,
 			int bannerType,
 			int horizontalGravity,
@@ -387,7 +387,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void showBannerAd (string zoneId) {
+		public static void ShowBannerAd (string zoneId) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("showBannerAd", zoneId);
 #else
@@ -395,7 +395,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void hideBannerAd (string zoneId) {
+		public static void HideBannerAd (string zoneId) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("hideBannerAd", zoneId);
 #else
@@ -403,12 +403,11 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void showAd (
-			TapsellAd tapsellAd) {
-			showAd (tapsellAd, null);
+		public static void ShowAd (TapsellAd tapsellAd) {
+			ShowAd (tapsellAd, null);
 		}
 
-		public static void showAd (
+		public static void ShowAd (
 			TapsellAd tapsellAd,
 			TapsellShowOptions showOptions) {
 			if (object.ReferenceEquals (showOptions, null)) {
@@ -439,12 +438,12 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void setRewardListener (
+		public static void SetRewardListener (
 			Action<TapsellAdFinishedResult> onFinishedAction) {
 			adFinishedAction = onFinishedAction;
 		}
 
-		public static String getVersion () {
+		public static String GetVersion () {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			return tapsell.CallStatic<String> ("getVersion");
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -454,71 +453,71 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void onAdAvailable (TapsellAd result) {
+		public static void OnAdAvailable (TapsellAd result) {
 			if (adFilledPool.ContainsKey (result.zoneId)) {
 				adFilledPool[result.zoneId] (result);
 			}
 		}
-		public static void onBannerRequestFilled (String zoneId) {
+		public static void OnBannerRequestFilled (String zoneId) {
 			if (bannerFilledPool.ContainsKey (zoneId)) {
 				bannerFilledPool[zoneId] (zoneId);
 			}
 		}
 
-		public static void onError (TapsellError error) {
+		public static void OnError (TapsellError error) {
 			if (errorPool.ContainsKey (error.zoneId)) {
 				errorPool[error.zoneId] (error);
 			}
 		}
 
-		public static void onNoAdAvailable (String zoneId) {
+		public static void OnNoAdAvailable (String zoneId) {
 			if (noAdAvailablePool.ContainsKey (zoneId)) {
 				noAdAvailablePool[zoneId] (zoneId);
 			}
 		}
 
-		public static void onNoNetwork (String zoneId) {
+		public static void OnNoNetwork (String zoneId) {
 			if (noNetworkPool.ContainsKey (zoneId)) {
 				noNetworkPool[zoneId] (zoneId);
 			}
 		}
 
-		public static void onExpiring (TapsellAd result) {
+		public static void OnExpiring (TapsellAd result) {
 			if (expiringPool.ContainsKey (result.zoneId)) {
 				expiringPool[result.zoneId] (result);
 			}
 		}
 
-		public static void onAdShowFinished (TapsellAdFinishedResult result) {
+		public static void OnAdShowFinished (TapsellAdFinishedResult result) {
 			if (adFinishedAction != null) {
 				adFinishedAction (result);
 			}
 		}
 
-		public static void onOpened (TapsellAd result) {
+		public static void OnOpened (TapsellAd result) {
 			if (adOpenedPool.ContainsKey (result.zoneId)) {
 				adOpenedPool[result.zoneId] (result);
 			}
 		}
 
-		public static void onClosed (TapsellAd result) {
+		public static void OnClosed (TapsellAd result) {
 			if (adClosedPool.ContainsKey (result.zoneId)) {
 				adClosedPool[result.zoneId] (result);
 			}
 		}
 
-		public static void onHideBanner (String zoneId) {
+		public static void OnHideBanner (String zoneId) {
 			if (hideBannerPool.ContainsKey (zoneId)) {
 				hideBannerPool[zoneId] (zoneId);
 			}
 		}
 
-		public static void onNativeBannerFilled (TapsellNativeBannerAd result) {
+		public static void OnNativeBannerFilled (TapsellNativeBannerAd result) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			string zoneId = result.zoneId;
 			if (result != null) {
 				if (mMonoBehaviour != null && mMonoBehaviour.isActiveAndEnabled) {
-					mMonoBehaviour.StartCoroutine (loadNativeBannerAdImages (result));
+					mMonoBehaviour.StartCoroutine (LoadNativeBannerAdImages (result));
 				} else {
 					if (errorPool.ContainsKey (zoneId)) {
 						TapsellError error = new TapsellError ();
@@ -538,7 +537,7 @@ namespace TapsellSDK {
 #endif
 		}
 
-		static IEnumerator loadNativeBannerAdImages (TapsellNativeBannerAd result) {
+		static IEnumerator LoadNativeBannerAdImages (TapsellNativeBannerAd result) {
 			if (result.iconUrl != null && !result.iconUrl.Equals ("")) {
 				UnityWebRequest wwwIcon = UnityWebRequest.Get (result.iconUrl);
 				yield return wwwIcon.SendWebRequest ();
@@ -566,7 +565,7 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void onNativeBannerAdClicked (string adId) {
+		public static void OnNativeBannerAdClicked (string adId) {
 #if UNITY_ANDROID && !UNITY_EDITOR
 			tapsell.CallStatic ("onNativeBannerAdClicked", adId);
 #endif

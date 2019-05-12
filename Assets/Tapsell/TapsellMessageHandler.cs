@@ -4,73 +4,73 @@ using UnityEngine;
 
 public class TapsellMessageHandler : MonoBehaviour {
 
-	public void notifyAdAvailable (String body) {
+	public void NotifyAdAvailable (String body) {
 		TapsellAd result = new TapsellAd ();
 		result = JsonUtility.FromJson<TapsellAd> (body);
 		Debug.Log ("notifyAdAvailable:" + result.zoneId + ":" + result.adId);
-		Tapsell.onAdAvailable (result);
+		Tapsell.OnAdAvailable (result);
 	}
 
-	public void notifyBannerFilled (String zoneId) {
+	public void NotifyBannerFilled (String zoneId) {
 		Debug.Log ("notifyBannerFilled:" + zoneId);
-		Tapsell.onBannerRequestFilled (zoneId);
+		Tapsell.OnBannerRequestFilled (zoneId);
 	}
 
-	public void notifyNativeBannerFilled (String body) {
+	public void NotifyNativeBannerFilled (String body) {
 		TapsellNativeBannerAd result = new TapsellNativeBannerAd ();
 		result = JsonUtility.FromJson<TapsellNativeBannerAd> (body);
 		Debug.Log ("notifyNativeBannerFilled:" + result.zoneId + ":" + result.adId);
-		Tapsell.onNativeBannerFilled (result);
+		Tapsell.OnNativeBannerFilled (result);
 	}
 
-	public void notifyError (String body) {
+	public void NotifyError (String body) {
 		TapsellError error = new TapsellError ();
 		error = JsonUtility.FromJson<TapsellError> (body);
 		Debug.Log ("notifyError:" + error.zoneId + ":" + error.message);
-		Tapsell.onError (error);
+		Tapsell.OnError (error);
 	}
 
-	public void notifyNoAdAvailable (String zoneId) {
+	public void NotifyNoAdAvailable (String zoneId) {
 		Debug.Log ("notifyNoAdAvailable:" + zoneId);
-		Tapsell.onNoAdAvailable (zoneId);
+		Tapsell.OnNoAdAvailable (zoneId);
 	}
 
-	public void notifyExpiring (String body) {
+	public void NotifyExpiring (String body) {
 		TapsellAd result = new TapsellAd ();
 		result = JsonUtility.FromJson<TapsellAd> (body);
 		Debug.Log ("notifyExpiring:" + result.zoneId + ":" + result.adId);
-		Tapsell.onExpiring (result);
+		Tapsell.OnExpiring (result);
 	}
 
-	public void notifyNoNetwork (String zoneId) {
+	public void NotifyNoNetwork (String zoneId) {
 		Debug.Log ("notifyNoNetwork:" + zoneId);
-		Tapsell.onNoNetwork (zoneId);
+		Tapsell.OnNoNetwork (zoneId);
 	}
 
-	public void notifyHideBanner (String zoneId) {
+	public void NotifyHideBanner (String zoneId) {
 		Debug.Log ("notifyHideBanner:" + zoneId);
-		Tapsell.onHideBanner (zoneId);
+		Tapsell.OnHideBanner (zoneId);
 	}
 
-	public void notifyOpened (String body) {
+	public void NotifyOpened (String body) {
 		TapsellAd result = new TapsellAd ();
 		result = JsonUtility.FromJson<TapsellAd> (body);
 		Debug.Log ("notifyOpened:" + result.zoneId + ":" + result.adId);
-		Tapsell.onOpened (result);
+		Tapsell.OnOpened (result);
 	}
 
-	public void notifyClosed (String body) {
+	public void NotifyClosed (String body) {
 		TapsellAd result = new TapsellAd ();
 		result = JsonUtility.FromJson<TapsellAd> (body);
 		Debug.Log ("notifyClosed:" + result.zoneId + ":" + result.adId);
-		Tapsell.onClosed (result);
+		Tapsell.OnClosed (result);
 	}
 
-	public void notifyShowFinished (String body) {
+	public void NotifyShowFinished (String body) {
 		TapsellAdFinishedResult result = new TapsellAdFinishedResult ();
 		result = JsonUtility.FromJson<TapsellAdFinishedResult> (body);
 		Debug.Log ("notifyShowFinished:" + result.zoneId + ":" + result.adId + ":" + result.rewarded);
-		Tapsell.onAdShowFinished (result);
+		Tapsell.OnAdShowFinished (result);
 	}
 
 }
