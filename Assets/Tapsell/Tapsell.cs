@@ -76,8 +76,8 @@ namespace TapsellSDK {
 			return iconImage;
 		}
 
-		public void OnClicked () {
-			Tapsell.OnNativeBannerAdClicked (this.adId);
+		public void Clicked () {
+			Tapsell.OnNativeBannerAdClicked (this.zoneId, this.adId);
 		}
 	}
 
@@ -538,25 +538,34 @@ namespace TapsellSDK {
 		}
 
 		static IEnumerator LoadNativeBannerAdImages (TapsellNativeBannerAd result) {
+
 			if (result.iconUrl != null && !result.iconUrl.Equals ("")) {
-				UnityWebRequest wwwIcon = UnityWebRequest.Get (result.iconUrl);
+				UnityWebRequest wwwIcon = UnityWebRequestTexture.GetTexture (result.iconUrl);
 				yield return wwwIcon.SendWebRequest ();
-				// if (wwwIcon.texture != null) {
-				// result.iconImage = wwwIcon.texture;
-				// }
-			}
-			if (result.portraitStaticImageUrl != null && !result.portraitStaticImageUrl.Equals ("")) {
-				WWW wwwPortrait = new WWW (result.portraitStaticImageUrl);
-				yield return wwwPortrait;
-				if (wwwPortrait.texture != null) {
-					result.portraitBannerImage = wwwPortrait.texture;
+				if (wwwIcon.isNetworkError || wwwIcon.isHttpError) {
+					Debug.Log (wwwIcon.error);
+				} else {
+					result.iconImage = ((DownloadHandlerTexture) wwwIcon.downloadHandler).texture;
 				}
 			}
+
+			if (result.portraitStaticImageUrl != null && !result.portraitStaticImageUrl.Equals ("")) {
+				UnityWebRequest wwwPortrait = UnityWebRequestTexture.GetTexture (result.portraitStaticImageUrl);
+				yield return wwwPortrait.SendWebRequest ();
+				if (wwwPortrait.isNetworkError || wwwPortrait.isHttpError) {
+					Debug.Log (wwwPortrait.error);
+				} else {
+					result.portraitBannerImage = ((DownloadHandlerTexture) wwwPortrait.downloadHandler).texture;
+				}
+			}
+
 			if (result.landscapeStaticImageUrl != null && !result.landscapeStaticImageUrl.Equals ("")) {
-				WWW wwwLandscape = new WWW (result.landscapeStaticImageUrl);
-				yield return wwwLandscape;
-				if (wwwLandscape.texture != null) {
-					result.landscapeBannerImage = wwwLandscape.texture;
+				UnityWebRequest wwwLandscape = UnityWebRequestTexture.GetTexture (result.landscapeStaticImageUrl);
+				yield return wwwLandscape.SendWebRequest ();
+				if (wwwLandscape.isNetworkError || wwwLandscape.isHttpError) {
+					Debug.Log (wwwLandscape.error);
+				} else {
+					result.landscapeBannerImage = ((DownloadHandlerTexture) wwwLandscape.downloadHandler).texture;
 				}
 			}
 
@@ -565,9 +574,9 @@ namespace TapsellSDK {
 			}
 		}
 
-		public static void OnNativeBannerAdClicked (string adId) {
+		public static void OnNativeBannerAdClicked (string zoneId, string adId) {
 #if UNITY_ANDROID && !UNITY_EDITOR
-			tapsell.CallStatic ("onNativeBannerAdClicked", adId);
+			tapsell.CallStatic ("onNativeBannerAdClicked", zoneId, adId);
 #endif
 		}
 	}
