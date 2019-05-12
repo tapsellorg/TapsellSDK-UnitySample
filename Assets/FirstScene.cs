@@ -9,10 +9,10 @@ public class FirstScene : MonoBehaviour {
   private readonly string TAPSELL_KEY = "kilkhmaqckffopkpfnacjkobgrgnidkphkcbtmbcdhiokqetigljpnnrbfbnpnhmeikjbq";
 
   void Start () {
-    Tapsell.initialize (TAPSELL_KEY);
+    Tapsell.Initialize (TAPSELL_KEY);
   }
 
-  public void changeScenes (string name) {
+  public void ChangeScenes (string name) {
     SceneManager.LoadScene (name);
   }
 }

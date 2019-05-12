@@ -8,9 +8,21 @@ public class RewardedScene : MonoBehaviour {
   private readonly string ZONE_ID = "5a5dbd5cc21bf000010d1686";
   public static TapsellAd ad;
 
+  void start () {
+    Tapsell.SetRewardListener (
+      (TapsellAdFinishedResult result) => {
+        Debug.Log (
+          "adId:" + result.adId + ", " +
+          "zoneId:" + result.zoneId + ", " +
+          "completed:" + result.completed + ", " +
+          "rewarded:" + result.rewarded);
+      }
+    );
+  }
+
   public void Request () {
 
-    Tapsell.requestAd (ZONE_ID, true,
+    Tapsell.RequestAd (ZONE_ID, true,
       (TapsellAd result) => {
         // onAdAvailable
         Debug.Log ("on Ad Available");
@@ -33,16 +45,25 @@ public class RewardedScene : MonoBehaviour {
       },
 
       (TapsellAd result) => {
-        //onExpiring
-        Debug.Log ("Expiring");
+        // onExpiring
+        Debug.Log ("expiring");
+      },
+
+      (TapsellAd result) => {
+        // onOpen
+        Debug.Log ("open");
+      },
+
+      (TapsellAd result) => {
+        // onClose
+        Debug.Log ("close");
       }
 
     );
   }
 
   public void Show () {
-        Debug.Log ("ShowShowShowShowShowShow");
-    Tapsell.showAd (ad, new TapsellShowOptions ());
+    Tapsell.ShowAd (ad, new TapsellShowOptions ());
   }
 
 }
