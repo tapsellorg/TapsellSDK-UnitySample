@@ -165,7 +165,7 @@ namespace TapsellSDK {
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 			SetJavaObject ();
-			tapsell.CallStatic ("initialize", key, "3.3.3");
+			tapsell.CallStatic ("initialize", key, "4.2.7.0");
 #elif UNITY_IOS && !UNITY_EDITOR
 			_TSInitialize (key);
 #endif
