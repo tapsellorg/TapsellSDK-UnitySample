@@ -21,18 +21,44 @@ allprojects {
     }
 }
 
+// Android Resolver Repos Start
+([rootProject] + (rootProject.subprojects as List)).each { project ->
+    project.repositories {
+        def unityProjectPath = "file:///" + file(rootProject.projectDir.path + "/../../").absolutePath
+        maven {
+            url "https://maven.google.com"
+        }
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+    }
+}
+// Android Resolver Repos End
 apply plugin: 'com.android.application'
 **APPLY_PLUGINS**
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+// Android Resolver Dependencies Start
+    implementation 'com.google.code.gson:gson:2.8.5' // Assets/Tapsell/Editor/TapsellDependencies.xml:4
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1' // Assets/Tapsell/Editor/TapsellDependencies.xml:10
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0' // Assets/Tapsell/Editor/TapsellDependencies.xml:8
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0' // Assets/Tapsell/Editor/TapsellDependencies.xml:6
+// Android Resolver Dependencies End
 **DEPS**}
 
+// Android Resolver Exclusions Start
+android {
+  packagingOptions {
+      exclude ('/lib/arm64-v8a/*' + '*')
+      exclude ('/lib/armeabi/*' + '*')
+      exclude ('/lib/mips/*' + '*')
+      exclude ('/lib/mips64/*' + '*')
+      exclude ('/lib/x86/*' + '*')
+      exclude ('/lib/x86_64/*' + '*')
+  }
+}
+// Android Resolver Exclusions End
 android {
     compileSdkVersion **APIVERSION**
     buildToolsVersion '**BUILDTOOLS**'
@@ -59,13 +85,14 @@ android {
 
     aaptOptions {
         noCompress = ['.unity3d', '.ress', '.resource', '.obb'**STREAMING_ASSETS**]
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }**SIGN**
 
     buildTypes {
         debug {
             minifyEnabled **MINIFY_DEBUG**
             useProguard **PROGUARD_DEBUG**
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'**USER_PROGUARD**
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'**USER_PROGUARD****SIGNCONFIG**
             jniDebuggable true
         }
         release {
@@ -75,6 +102,7 @@ android {
         }
     }**PACKAGING_OPTIONS****SPLITS**
 **BUILT_APK_LOCATION**
+**EXTERNAL_SOURCES**
     bundle {
         language {
             enableSplit = false

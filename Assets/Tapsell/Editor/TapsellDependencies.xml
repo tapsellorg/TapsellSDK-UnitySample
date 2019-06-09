@@ -1,0 +1,13 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.code.gson:gson:2.8.5">
+    </androidPackage>
+    <androidPackage spec="com.squareup.retrofit2:retrofit:2.5.0">
+    </androidPackage>
+    <androidPackage spec="com.squareup.retrofit2:converter-gson:2.5.0">
+    </androidPackage>
+    <androidPackage spec="com.squareup.okhttp3:logging-interceptor:3.12.1">
+    </androidPackage>
+  </androidPackages>
+</dependencies>
+

@@ -1,0 +1,9 @@
+<dependencies>
+  <packages>
+    <package>com.google.code.gson:gson:2.8.5</package>
+    <package>com.squareup.okhttp3:logging-interceptor:3.12.1</package>
+    <package>com.squareup.retrofit2:converter-gson:2.5.0</package>
+    <package>com.squareup.retrofit2:retrofit:2.5.0</package>
+  </packages>
+  <files />
+</dependencies>
