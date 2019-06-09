@@ -40,7 +40,6 @@ captures/
 
 # IntelliJ
 *.iml
-.idea
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -537,6 +536,7 @@ Assets/StreamingAssets/crashlytics-build.properties
 
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
