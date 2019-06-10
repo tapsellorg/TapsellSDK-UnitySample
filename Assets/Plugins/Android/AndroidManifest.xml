@@ -16,7 +16,7 @@
   <application
     android:theme="@style/UnityThemeSelector"
     android:icon="@drawable/app_icon" 
-    ndroid:label="@string/app_name" 
+    android:label="@string/app_name" 
     android:debuggable="true">
 
     <activity 
