@@ -6,6 +6,9 @@
   android:versionName="1.1" 
   android:versionCode="2">
   
+  <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
   <supports-screens
     android:smallScreens="true" 
     android:normalScreens="true"
@@ -33,6 +36,13 @@
         android:value="true" />
     
     </activity>
+
+    <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="ir.tapsell.sdk.TapsellAdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
   </application>
 
