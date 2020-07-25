@@ -572,3 +572,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/osx,linux,macos,unity,csharp,windows,android,sublimetext,visualstudiocode
+
+[Aa]sset/[Pp]lugins/[Gg]ithub/
+[Ee]xport/
