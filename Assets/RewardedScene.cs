@@ -63,7 +63,7 @@ public class RewardedScene : MonoBehaviour {
   }
 
   public void Show () {
-    Tapsell.ShowAd (ad, new TapsellShowOptions ());
+    Tapsell.ShowAd (ZONE_ID, ad, new TapsellShowOptions ());
   }
 
 }
