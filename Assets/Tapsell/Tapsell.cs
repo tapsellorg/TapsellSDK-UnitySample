@@ -404,11 +404,12 @@ namespace TapsellSDK {
 		}
 
 		public static void ShowAd (TapsellAd tapsellAd) {
-			ShowAd (tapsellAd, null);
+			ShowAd (tapsellAd, null, null);
 		}
 
 		public static void ShowAd (
 			TapsellAd tapsellAd,
+			string zoneId,
 			TapsellShowOptions showOptions) {
 			if (object.ReferenceEquals (showOptions, null)) {
 				showOptions = new TapsellShowOptions ();
@@ -418,6 +419,7 @@ namespace TapsellSDK {
 			expiringPool.Remove (tapsellAd.zoneId);
 			tapsell.CallStatic ("showAd",
 				tapsellAd.adId,
+				zoneId,
 				showOptions.backDisabled,
 				showOptions.immersiveMode,
 				showOptions.rotationMode,
