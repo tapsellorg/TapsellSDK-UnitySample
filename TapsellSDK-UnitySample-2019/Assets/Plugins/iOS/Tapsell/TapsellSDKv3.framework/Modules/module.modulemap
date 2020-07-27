@@ -1,0 +1,6 @@
+framework module TapsellSDKv3 {
+  umbrella header "TapsellSDKv3.h"
+
+  export *
+  module * { export * }
+}
