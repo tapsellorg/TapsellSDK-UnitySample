@@ -403,13 +403,13 @@ namespace TapsellSDK {
 #endif
 		}
 
-		public static void ShowAd (TapsellAd tapsellAd) {
-			ShowAd (null, tapsellAd, null);
+		public static void ShowAd (TapsellAd tapsellAd, string zoneId) {
+			ShowAd (tapsellAd, zoneId, null);
 		}
 
 		public static void ShowAd (
-			string zoneId,
 			TapsellAd tapsellAd,
+			string zoneId,
 			TapsellShowOptions showOptions) {
 			if (object.ReferenceEquals (showOptions, null)) {
 				showOptions = new TapsellShowOptions ();

@@ -52,7 +52,7 @@ public class InterstititalScene : MonoBehaviour {
   }
 
   public void Show () {
-    Tapsell.ShowAd (ZONE_ID, ad, new TapsellShowOptions ());
+    Tapsell.ShowAd (ad, ZONE_ID, new TapsellShowOptions ());
   }
 
 }
